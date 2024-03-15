@@ -5,7 +5,6 @@ import { BooksContext } from "../../store/books";
 
 const Cards = () => {
   const { books, setBooks } = useContext(BooksContext);
-  console.log("Cars is workign ");
   return (
     <>
       <div className="font-[sans-serif] bg-gray-100">

@@ -5,7 +5,7 @@ const Card = ({ book }) => {
   return (
     <>
       {/* Replace the :34 with the id of the book */}
-      <Link to="/book/:34" className="block">
+      <Link to={`/book/${book._id}`} className="block">
         <div className="bg-white rounded-2xl p-6 cursor-pointer hover:-translate-y-2 transition-all relative">
           <div className="bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer absolute top-4 right-4">
             <FaRegHeart size={20} />

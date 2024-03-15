@@ -1,19 +1,21 @@
 import React, { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import DisplayInformation from "./DisplayInformation";
 import { FiHeart } from "react-icons/fi";
 import Reviews from "./Reviews";
 import { BooksContext } from "../../store/books";
 import { useGetBookById } from "../../hooks/useGetBookById";
 const Book = () => {
-  const { singleBook } = useContext(BooksContext);
-  console.log(singleBook);
+  const { singleBook, setSingleBook } = useContext(BooksContext);
+  // console.log(singleBook);
   const { loading, getBookById } = useGetBookById();
-  const id = 100;
+  const { id } = useParams();
 
   useEffect(() => {
-    console.log(" Book details fetched ");
+    // console.log(" Book details fetched ");
     getBookById({ id });
-  }, [singleBook]);
+    // console.log(singleBook);
+  }, []);
 
   return (
     <>
@@ -26,8 +28,9 @@ const Book = () => {
               <div className="px-4 py-10 rounded-xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] relative">
                 <div className="flex justify-center">
                   <img
-                    className="max-w-full h-auto"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-nNTRoHLNRlEpD-1M5TYwXpa167wlinCYUw&usqp=CAU"
+                    // className="max-w-full h-auto"
+                    className="h-64 w-40 object-contain"
+                    src={singleBook?.images}
                     alt="Product"
                   />
                 </div>
@@ -40,12 +43,14 @@ const Book = () => {
             </div>
             <div className="lg:col-span-2">
               <h2 className="text-2xl font-extrabold text-[#333]">
-                Acer Aspire Pro 12 | Laptop
+                {singleBook?.title}
               </h2>
               <div className="flex flex-wrap gap-4 mt-6">
-                <p className="text-[#333] text-4xl font-bold">$1200</p>
+                <p className="text-[#333] text-4xl font-bold">
+                  ${singleBook?.price}
+                </p>
                 <p className="text-gray-400 text-xl">
-                  <strike>$1500</strike>{" "}
+                  <strike>${singleBook?.price + 50}</strike>{" "}
                   <span className="text-sm ml-1">Tax included</span>
                 </p>
               </div>

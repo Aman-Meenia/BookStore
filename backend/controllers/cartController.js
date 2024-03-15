@@ -1,12 +1,14 @@
-import Cart from "../models/Cart";
-import Book from "../models/Book";
-import User from "../models/User";
+import Book from "../models/bookModel.js";
+import User from "../models/userModel.js";
+import Cart from "../models/cartModel.js";
+import mongoose from "mongoose";
+
 // <---------------------------Add Book To Cart -------------------------------->
 
 export const addBookToCart = async (req, res) => {
   try {
-    const { userId, bookId } = req.body;
-
+    const { bookId } = req.body;
+    const { id: userId } = req.user;
     // if bookId or userIs is missing
     if (!userId || !bookId) {
       return res.status(400).json({
@@ -75,18 +77,21 @@ export const addBookToCart = async (req, res) => {
         cart,
       });
     } else {
-      const cart = await Cart.findOneAndUpdate(
-        { userId },
-        {
-          $push: {
-            books: {
-              bookId,
-              quantity: 1,
-            },
-          },
-        },
-        { new: true },
+      //  If book arlready present in cart increase its value by One
+
+      const FindBookInCart = cart.books.find(
+        (book) => book.bookId.toString() === bookId.toString(),
       );
+      if (FindBookInCart) {
+        FindBookInCart.quantity = FindBookInCart.quantity + 1;
+      } else {
+        cart.books.push({
+          bookId,
+          quantity: 1,
+        });
+      }
+      await cart.save();
+
       return res.status(200).json({
         status: true,
         message: "Book added to cart successfully",
@@ -101,10 +106,118 @@ export const addBookToCart = async (req, res) => {
   }
 };
 
+// <----------------------------------Get All Books In Cart ------------------------->
+
+export const getBooksFromCart = async (req, res) => {
+  try {
+    const { _id: userId } = req.user;
+
+    if (!userId) {
+      return res.status(400).json({
+        status: false,
+        message: "User id is  required",
+      });
+    }
+
+    const validMongoId = mongoose.Types.ObjectId.isValid(userId);
+    if (!validMongoId) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid user id",
+      });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(400).json({
+        status: false,
+        message: "User not found",
+      });
+    }
+
+    const cart = await Cart.findOne({ userId }).populate({
+      path: "books.bookId",
+      select: "title author price images",
+    });
+
+    if (!cart) {
+      return res.status(400).json({
+        status: false,
+        message: "Cart empty",
+      });
+    }
+
+    const books = cart.books;
+    return res.status(200).json({
+      status: true,
+      message: "Cart fetched successfully",
+      cart: books,
+    });
+  } catch (err) {
+    console.log("Error in get book from cart " + err);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
 // <----------------------------------Remove Book From Cart ------------------------->
 
 export const removeBookFromCart = async (req, res) => {
   try {
-    const { userId, bookId } = req.body;
-  } catch (err) {}
+    const { bookId } = req.body;
+    const { id: userId } = req.user;
+
+    if (!bookId) {
+      return res.status(400).json({
+        status: false,
+        message: "Book id is required",
+      });
+    }
+
+    const validMongoId = mongoose.Types.ObjectId.isValid(bookId);
+    if (!validMongoId) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid book id",
+      });
+    }
+
+    const userCart = await Cart.findOne({ userId });
+
+    if (!userCart) {
+      return res.status(400).json({
+        status: false,
+        message: "Cart already empty",
+      });
+    }
+
+    const bookPresent = userCart.books.find(
+      (book) => book.bookId.toString() === bookId.toString(),
+    );
+
+    if (!bookPresent) {
+      return res.status(400).json({
+        status: false,
+        message: "Book not found in cart",
+      });
+    }
+
+    userCart.books = userCart.books.filter(
+      (book) => book.bookId.toString() !== bookId.toString(),
+    );
+
+    await userCart.save();
+    return res.status(200).json({
+      status: true,
+      message: "Book removed from cart successfully",
+    });
+  } catch (err) {
+    console.log("Error in remove book from cart " + err);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
 };

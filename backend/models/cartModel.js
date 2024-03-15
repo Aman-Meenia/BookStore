@@ -11,7 +11,8 @@ const cartModel = new mongoose.Schema(
     books: [
       {
         bookId: {
-          type: String,
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Book",
           required: true,
           index: true,
         },
@@ -28,5 +29,4 @@ const cartModel = new mongoose.Schema(
 );
 
 const Cart = mongoose.model("Cart", cartModel);
-
 export default Cart;

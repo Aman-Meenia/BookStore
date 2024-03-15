@@ -6,10 +6,12 @@ import fs from "fs";
 // <----------------------------------Add Book ------------------------------>
 
 const unlinkFile = (filePath) => {
+  if (!filePath) return;
   fs.unlinkSync(filePath);
 };
 
 export const addBook = async (req, res) => {
+  console.log("Add book function called");
   try {
     const {
       title,
@@ -243,11 +245,11 @@ export const getBookById = async (req, res) => {
         message: "Book not found",
       });
     }
-    // return res.status(200).json({
-    //   status: true,
-    //   message: "Book fetched successfully",
-    //   data: book,
-    // });
+    return res.status(200).json({
+      status: true,
+      message: "Book fetched successfully",
+      data: book,
+    });
   } catch (err) {
     console.log("Error in get Book By Id Controller " + err);
     return res.status(500).json({

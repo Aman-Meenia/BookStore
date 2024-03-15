@@ -26,6 +26,7 @@ import Contact from "./pages/contact/Contact.jsx";
 import AddProduct from "./admin/AddProduct.jsx";
 import UpdateProduct from "./admin/UpdateProduct.jsx";
 import BookDetailContextProvider from "./store/fetchForUpdate.jsx";
+import ContactPage from "./pages/contact/ContactPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,7 +43,7 @@ const router = createBrowserRouter(
         <Route path="/wishlist" element={<WishList />} />
         <Route path="/checkout" element={<Checkout />} />
       </Route>
-      <Route path="/contact" element={<Contact />} />
+      <Route path="/contact" element={<ContactPage />} />
 
       {/* protected routes */}
       <Route path="/admin/" element={<AdminHome />}>

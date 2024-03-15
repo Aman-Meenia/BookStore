@@ -10,7 +10,7 @@ export const useGetBooks = () => {
 
   const getBooks = async () => {
     setLoading(true);
-    console.log("Get books called");
+    // console.log("Get books called");
     await axios
       .get("/api/v1/book/getbooks")
       .then((response) => {

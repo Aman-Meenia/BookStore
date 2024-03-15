@@ -7,7 +7,6 @@ export const useGetBookById = () => {
   const [loading, setLoading] = useState(false);
   const { setSingleBook } = useContext(BooksContext);
   const getBookById = async ({ id }) => {
-    console.log("id is " + id);
     if (!id) {
       return;
     }
@@ -15,15 +14,16 @@ export const useGetBookById = () => {
     await axios
       .get(`/api/v1/book/getbookbyid/${id}`)
       .then((response) => {
-        console.log("Book fetched successfully");
-        console.log(response.data.data);
-
         setSingleBook(response.data.data);
       })
       .catch((err) => {
-        console.log(err.response.data);
-        console.log("Error while fetchign book details");
-        toast.error("Error while fetching book details");
+        toast.error(err.response.data.message, {
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
       })
       .finally(() => {
         setLoading(false);
