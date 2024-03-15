@@ -27,6 +27,7 @@ import AddProduct from "./admin/AddProduct.jsx";
 import UpdateProduct from "./admin/UpdateProduct.jsx";
 import BookDetailContextProvider from "./store/fetchForUpdate.jsx";
 import ContactPage from "./pages/contact/ContactPage.jsx";
+import UserProfile from "./pages/profile/UserProfile.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,13 +43,13 @@ const router = createBrowserRouter(
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<WishList />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/profile" element={<UserProfile />} />
       </Route>
       <Route path="/contact" element={<ContactPage />} />
 
       {/* protected routes */}
       <Route path="/admin/" element={<AdminHome />}>
         <Route path="addbook" element={<AddProduct />} />
-
         <Route path="updatebook" element={<UpdateProduct />} />
       </Route>
     </Route>,

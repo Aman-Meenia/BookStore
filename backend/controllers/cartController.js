@@ -221,3 +221,109 @@ export const removeBookFromCart = async (req, res) => {
     });
   }
 };
+
+// <--------------------------------Decrease the count of book in cart ------------------------->
+
+export const decreaseBookCount = async (req, res) => {
+  try {
+    const { bookId } = req.body;
+    const { id: userId } = req.user;
+
+    if (!bookId) {
+      return res.status(400).json({
+        status: false,
+        message: "Book id is required",
+      });
+    }
+
+    const validMongoId = mongoose.Types.ObjectId.isValid(bookId);
+    if (!validMongoId) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid book id",
+      });
+    }
+
+    const userCart = await Cart.findOne({ userId });
+
+    if (!userCart) {
+      return res.status(400).json({
+        status: false,
+        message: "Cart already empty",
+      });
+    }
+
+    const bookPresent = userCart.books.find(
+      (book) => book.bookId.toString() === bookId.toString(),
+    );
+
+    if (!bookPresent) {
+      return res.status(400).json({
+        status: false,
+        message: "Book not found in cart",
+      });
+    }
+
+    // if book present decrease its count by one but if the count is zero than do nothing
+
+    if (bookPresent.quantity > 1) {
+      bookPresent.quantity = bookPresent.quantity - 1;
+      await userCart.save();
+      return res.status(200).json({
+        status: true,
+        message: "Book count decreased successfully",
+      });
+    }
+
+    return res.status(400).json({
+      status: false,
+      message: "Book count cannot be zero",
+    });
+  } catch (err) {
+    console.log("Error in decrease book count " + err);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// <---------------------------------Get Cart Total Price ------------------------->
+
+export const getCartTotalPrice = async (req, res) => {
+  try {
+    const { id: userId } = req.user;
+
+    if (!userId) {
+      return res.status(400).json({
+        status: false,
+        message: "User id is required",
+      });
+    }
+
+    const userCart = await Cart.findOne({ userId }).populate("books.bookId");
+
+    if (!userCart) {
+      return res.status(400).json({
+        status: false,
+        message: "Cart empty",
+      });
+    }
+
+    const totalPrice = userCart.books.reduce((acc, book) => {
+      return acc + book.bookId.price * book.quantity;
+    }, 0);
+
+    return res.status(200).json({
+      status: true,
+      message: "Cart total price fetched successfully",
+      bill: totalPrice,
+    });
+  } catch (err) {
+    console.log("Error in get cart total price " + err);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};

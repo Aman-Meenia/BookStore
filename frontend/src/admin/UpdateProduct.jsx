@@ -24,7 +24,7 @@ const UpdateProduct = () => {
   // Function to handle input key pressed is numeric or not
   const handleKeyPress = (event) => {
     const charCode = event.which ? event.which : event.keyCode;
-    // handle delet key
+    // handle delete key
     if (event.key === "Backspace") {
       return;
     }
