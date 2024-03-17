@@ -13,8 +13,8 @@ const Cards = () => {
             Premium Books
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {books.map((book) => (
-              <Card key={book.id} book={book} />
+            {books.map((book, index) => (
+              <Card key={index} book={book} />
             ))}
           </div>
         </div>

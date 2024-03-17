@@ -5,6 +5,7 @@ import { FiHeart } from "react-icons/fi";
 import Reviews from "./Reviews";
 import { BooksContext } from "../../store/books";
 import { useGetBookById } from "../../hooks/useGetBookById";
+import { useAddToCart } from "../../hooks/useAddToCart";
 const Book = () => {
   const { singleBook, setSingleBook } = useContext(BooksContext);
   // console.log(singleBook);
@@ -16,6 +17,14 @@ const Book = () => {
     getBookById({ id });
     // console.log(singleBook);
   }, []);
+
+  const { loadingAddToCart, addToCart } = useAddToCart();
+
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
+
+    await addToCart({ bookId: singleBook?._id });
+  };
 
   return (
     <>
@@ -100,6 +109,7 @@ const Book = () => {
                 <button
                   type="button"
                   className="min-w-[200px] px-4 py-2.5 border border-[#333] bg-transparent hover:bg-gray-50 text-[#333] text-sm font-bold rounded"
+                  onClick={handleAddToCart}
                 >
                   Add to cart
                 </button>

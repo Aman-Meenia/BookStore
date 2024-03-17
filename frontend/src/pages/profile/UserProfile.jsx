@@ -7,7 +7,16 @@ const UserProfile = () => {
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
           Update product
         </h2>
+
         <form action="#">
+          <div className=" flex justify-center">
+            <img
+              className="rounded-full w-60 h-60"
+              src="http://surl.li/rkylt"
+              alt="image description"
+            />
+          </div>
+
           <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
             <div className="sm:col-span-2">
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -16,7 +25,6 @@ const UserProfile = () => {
               <input
                 type="text"
                 name="name"
-                id="name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 value="Apple iMac 27&ldquo;"
                 placeholder="Type product name"
@@ -30,7 +38,6 @@ const UserProfile = () => {
               <input
                 type="text"
                 name="brand"
-                id="brand"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 value="Apple"
                 placeholder="Product brand"
@@ -44,7 +51,6 @@ const UserProfile = () => {
               <input
                 type="number"
                 name="price"
-                id="price"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 value="2999"
                 placeholder="$299"
@@ -55,10 +61,7 @@ const UserProfile = () => {
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Category
               </label>
-              <select
-                id="category"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              >
+              <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                 <option selected="">Electronics</option>
                 <option value="TV">TV/Monitors</option>
                 <option value="PC">PC</option>

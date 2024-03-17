@@ -19,10 +19,12 @@ const PORT = process.env.PORT || 3000;
 import userRouter from "./routes/userRoutes.js";
 import bookRouter from "./routes/bookRoutes.js";
 import cartRouter from "./routes/cartRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/book", bookRouter);
 app.use("/api/v1/cart", cartRouter);
+app.use("/api/v1/order", orderRouter);
 
 if (await connectMongoDB()) {
   app.listen(PORT, () => {

@@ -3,7 +3,7 @@ import React from "react";
 const PlaceOrder = () => {
   return (
     <>
-      <div className="xl:col-span-2 h-max rounded-md p-8 sticky top-0">
+      <div className="xl:col-span-2 h-max rounded-md p-2 sticky top-0 ">
         <h2 className="text-2xl font-bold text-[#333]">Complete your order</h2>
         <form className="mt-10">
           <div>

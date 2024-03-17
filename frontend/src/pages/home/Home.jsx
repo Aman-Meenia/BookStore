@@ -6,8 +6,8 @@ import { useGetBooks } from "../../hooks/useGetBooks";
 import { BooksContext } from "../../store/books";
 
 const Home = () => {
-  const { loading, getBooks } = useGetBooks();
-  const { books, setBooks } = useContext(BooksContext);
+  const { getBooks } = useGetBooks();
+  const { books } = useContext(BooksContext);
   useEffect(() => {
     const getBooksFun = async () => {
       await getBooks();

@@ -22,12 +22,12 @@ import Cart from "./pages/cart/Cart.jsx";
 import WishList from "./pages/wishList/WishList.jsx";
 import Checkout from "./pages/checkout/Checkout.jsx";
 import AdminHome from "./admin/AdminHome.jsx";
-import Contact from "./pages/contact/Contact.jsx";
 import AddProduct from "./admin/AddProduct.jsx";
 import UpdateProduct from "./admin/UpdateProduct.jsx";
 import BookDetailContextProvider from "./store/fetchForUpdate.jsx";
 import ContactPage from "./pages/contact/ContactPage.jsx";
 import UserProfile from "./pages/profile/UserProfile.jsx";
+import CartContextProvider from "./store/cart.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -59,8 +59,10 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BooksContextProvider>
     <BookDetailContextProvider>
-      <Toaster />
-      <RouterProvider router={router} />
+      <CartContextProvider>
+        <Toaster />
+        <RouterProvider router={router} />
+      </CartContextProvider>
     </BookDetailContextProvider>
   </BooksContextProvider>,
 );

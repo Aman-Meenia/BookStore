@@ -100,7 +100,6 @@ export const addBook = async (req, res) => {
 export const getBookByTitle = async (req, res) => {
   try {
     const { title } = req.body;
-    console.log("Title is " + title);
     if (!title) {
       return res.status(400).json({
         status: false,
@@ -237,7 +236,6 @@ export const getBookById = async (req, res) => {
       });
     }
 
-    console.log("Id is " + id);
     const book = await Book.findById({ _id: id });
     if (!book) {
       return res.status(400).json({

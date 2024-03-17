@@ -7,7 +7,12 @@ const BooksContextProvider = ({ children }) => {
 
   return (
     <BooksContext.Provider
-      value={{ books, setBooks, singleBook, setSingleBook }}
+      value={{
+        books,
+        setBooks,
+        singleBook,
+        setSingleBook,
+      }}
     >
       {children}
     </BooksContext.Provider>

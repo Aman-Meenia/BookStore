@@ -1,6 +1,20 @@
 import React from "react";
+import { useRemoveFromCart } from "../../hooks/useRemoveFromCart";
+import toast from "react-hot-toast";
 
-const CartProduct = () => {
+const CartProduct = ({ book }) => {
+  // delete the product from cart
+
+  const { loading, removeFromCart } = useRemoveFromCart();
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const bookId = book.bookId._id;
+    console.log(bookId);
+    removeFromCart({ bookId });
+  };
+
+  console.log(book);
   return (
     <>
       <div className="lg:col-span-2 bg-white divide-y">
@@ -8,16 +22,16 @@ const CartProduct = () => {
           <div className="md:col-span-2 flex items-center gap-6">
             <div className="w-32 h-22 shrink-0 shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)] p-4">
               <img
-                src="https://readymadeui.com/images/product11.webp"
+                src={book.bookId.images}
                 className="w-full h-full object-contain rounded-md"
               />
             </div>
             <div>
-              <h3 className="text-lg font-extrabold text-[#333]">
-                VelvetGlide Boots
+              <h3 className="text-lg font-extrabold text-[#333] break-words">
+                {book.bookId.title}
               </h3>
               <h6 className="text-md text-gray-500 mt-2">
-                Color: <strong className="ml-2">Black</strong>
+                <strong className="ml-2">{book.bookId.author}</strong>
               </h6>
             </div>
           </div>
@@ -41,7 +55,7 @@ const CartProduct = () => {
               type="button"
               className="bg-transparent mx-4 px-4 py-2 font-semibold text-[#333] text-md shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)]"
             >
-              1
+              {book.quantity}
             </button>
             <button
               type="button"
@@ -60,11 +74,15 @@ const CartProduct = () => {
             </button>
           </div>
           <div className="flex items-center">
-            <h4 className="text-lg font-bold text-[#333]">$20.00</h4>
+            <h4 className="text-lg font-bold text-[#333]">
+              ${book.bookId.price}
+            </h4>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-3 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 ml-auto"
               viewBox="0 0 320.591 320.591"
+              type="button"
+              onClick={onSubmit}
             >
               <path
                 d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"

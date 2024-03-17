@@ -166,7 +166,7 @@ export const getBooksFromCart = async (req, res) => {
 
 export const removeBookFromCart = async (req, res) => {
   try {
-    const { bookId } = req.body;
+    const { bookId } = req.params;
     const { id: userId } = req.user;
 
     if (!bookId) {
@@ -207,6 +207,16 @@ export const removeBookFromCart = async (req, res) => {
     userCart.books = userCart.books.filter(
       (book) => book.bookId.toString() !== bookId.toString(),
     );
+    console.log(userCart);
+
+    // if cart is empty then remove cart
+    if (userCart.books.length === 0) {
+      await Cart.findByIdAndDelete(userCart._id);
+      return res.status(200).json({
+        status: true,
+        message: "Book removed from cart successfully",
+      });
+    }
 
     await userCart.save();
     return res.status(200).json({
@@ -304,9 +314,11 @@ export const getCartTotalPrice = async (req, res) => {
     const userCart = await Cart.findOne({ userId }).populate("books.bookId");
 
     if (!userCart) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: false,
         message: "Cart empty",
+        bill: 0,
+        quantity: 0,
       });
     }
 
@@ -314,10 +326,15 @@ export const getCartTotalPrice = async (req, res) => {
       return acc + book.bookId.price * book.quantity;
     }, 0);
 
+    const totalQuantity = userCart.books.reduce((acc, book) => {
+      return acc + book.quantity;
+    }, 0);
+
     return res.status(200).json({
       status: true,
       message: "Cart total price fetched successfully",
       bill: totalPrice,
+      quantity: totalQuantity,
     });
   } catch (err) {
     console.log("Error in get cart total price " + err);

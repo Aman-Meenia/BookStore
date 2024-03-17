@@ -10,7 +10,7 @@ const Links = () => {
   };
   return (
     <>
-      <div className="flex flex-wrap items-start px-10 py-3.5 relative">
+      <div className="flex flex-wrap items-start px-10 py-3.5 relative  bg-base-100 border-white">
         <div className="flex ml-auto lg:order-1 lg:hidden">
           <button id="toggle" className="ml-7" onClick={toogleMenu}>
             <svg
@@ -27,73 +27,55 @@ const Links = () => {
           </button>
         </div>
         <ul
-          // id="collapseMenu"
-          className={`${isMenuOpen ? "block" : "hidden"} lg:!flex justify-center lg:space-x-8 max-lg:space-y-2  w-full `}
+          className={`${isMenuOpen ? "block" : "hidden"} lg:!flex justify-center lg:space-x-0 max-lg:space-y-2  w-full `}
         >
-          <li className="max-lg:border-b border-white-200 max-lg:py-2">
-            <a
-              href="javascript:void(0)"
-              className="lg:hover:text-white-600 font-bold text-white-500 text-[15px] block"
-            >
-              New Arrivals
-            </a>
-          </li>
-          <li className="max-lg:border-b border-white-200 max-lg:py-2">
-            <a
-              href="javascript:void(0)"
-              className="lg:hover:text-white-600 font-bold text-white-500 text-[15px] block"
-            >
-              Best Sellers
-            </a>
-          </li>
-          <li className="max-lg:border-b border-white-200 max-lg:py-2">
-            <a
-              href="javascript:void(0)"
-              className="lg:hover:text-white-600 font-bold text-white-500 text-[15px] block"
-            >
-              Genre
-            </a>
-          </li>
-          <li className="max-lg:border-b border-white-200 max-lg:py-2">
-            <a
-              href="javascript:void(0)"
-              className="lg:hover:text-white-600 font-bold text-white-500 text-[15px] block"
-            >
-              Genre
-            </a>
-          </li>
-          <li className="max-lg:border-b border-white-200 max-lg:py-2">
-            <a
-              href="javascript:void(0)"
-              className="lg:hover:text-white-600 font-bold text-white-500 text-[15px] block"
-            >
-              Genre
-            </a>
-          </li>
-          <li className="max-lg:border-b border-white-200 max-lg:py-2">
-            <a
-              href="javascript:void(0)"
-              className="lg:hover:text-white-600 font-bold text-white-500 text-[15px] block"
-            >
-              Genre
-            </a>
-          </li>
-          <li className="max-lg:border-b border-white-200 max-lg:py-2">
-            <a
-              href="javascript:void(0)"
-              className="lg:hover:text-white-600 font-bold text-white-500 text-[15px] block"
-            >
-              Genre
-            </a>
-          </li>
-          <li className="max-lg:border-b border-white-200 max-lg:py-2">
-            <a
-              href="javascript:void(0)"
-              className="lg:hover:text-white-600 font-bold text-white-500 text-[15px] block"
-            >
-              Genre
-            </a>
-          </li>
+          <div className="flex items-center">
+            <li className="max-lg:border-b border-white-200 max-lg:py-2">
+              <a className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold">
+                New Arrivals
+              </a>
+            </li>
+            <span className="text-red-500 text-2xl p-3">|</span>
+          </div>
+          <div className="flex items-center">
+            <li className="max-lg:border-b border-white-200 max-lg:py-2">
+              <a className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold">
+                New Arrivals
+              </a>
+            </li>
+            <span className="text-red-500 text-2xl p-3">|</span>
+          </div>
+          <div className="flex items-center">
+            <li className="max-lg:border-b border-white-200 max-lg:py-2">
+              <a className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold">
+                New Arrivals
+              </a>
+            </li>
+            <span className="text-red-500 text-2xl p-3">|</span>
+          </div>
+          <div className="flex items-center">
+            <li className="max-lg:border-b border-white-200 max-lg:py-2">
+              <a className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold">
+                New Arrivals
+              </a>
+            </li>
+            <span className="text-red-500 text-2xl p-3">|</span>
+          </div>
+          <div className="flex items-center">
+            <li className="max-lg:border-b border-white-200 max-lg:py-2">
+              <a className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold">
+                New Arrivals
+              </a>
+            </li>
+            <span className="text-red-500 text-2xl p-3">|</span>
+          </div>
+          <div className="flex items-center">
+            <li className="max-lg:border-b border-white-200 max-lg:py-2">
+              <a className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold">
+                New Arrivals
+              </a>
+            </li>
+          </div>
         </ul>
       </div>
     </>
