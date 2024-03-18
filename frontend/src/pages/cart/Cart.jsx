@@ -11,7 +11,7 @@ const Cart = () => {
   const { navBarCart, setNavBarCart } = useContext(CartContext);
 
   // cart product list
-  useEffect(() => {
+  useMemo(() => {
     const fun = async () => {
       await getCart();
     };

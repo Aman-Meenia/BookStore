@@ -1,6 +1,9 @@
 import React from "react";
 import { useRemoveFromCart } from "../../hooks/useRemoveFromCart";
 import toast from "react-hot-toast";
+import { useDecreaseCountOfBook } from "../../hooks/useDecreaseCountOfBook";
+import { useAddToCart } from "../../hooks/useAddToCart";
+import { useIncreaseCountOfBook } from "../../hooks/useIncreaseCountOfBook";
 
 const CartProduct = ({ book }) => {
   // delete the product from cart
@@ -12,6 +15,24 @@ const CartProduct = ({ book }) => {
     const bookId = book.bookId._id;
     console.log(bookId);
     removeFromCart({ bookId });
+  };
+
+  // handle decrease count
+  const { decreaseCountLoading, decreaseCountOfBook } =
+    useDecreaseCountOfBook();
+
+  const decreaseCount = async (e) => {
+    e.preventDefault();
+    const bookId = book.bookId._id;
+    decreaseCountOfBook({ bookId });
+  };
+
+  // handle increase count
+  const { increaseCountOfBook, increseCountLoading } = useIncreaseCountOfBook();
+  const increaseCount = async (e) => {
+    e.preventDefault();
+    const bookId = book.bookId._id;
+    increaseCountOfBook({ bookId });
   };
 
   console.log(book);
@@ -36,7 +57,10 @@ const CartProduct = ({ book }) => {
             </div>
           </div>
           <div className="flex">
+            {/* Decrease the count of book in the cart by 1 */}
+
             <button
+              onClick={decreaseCount}
               type="button"
               className="bg-transparent py-2 font-semibold text-[#333]"
             >
@@ -57,7 +81,9 @@ const CartProduct = ({ book }) => {
             >
               {book.quantity}
             </button>
+            {/*  Increase the count of book by 1 in cart */}
             <button
+              onClick={increaseCount}
               type="button"
               className="bg-transparent py-2 font-semibold text-[#333]"
             >
@@ -77,6 +103,7 @@ const CartProduct = ({ book }) => {
             <h4 className="text-lg font-bold text-[#333]">
               ${book.bookId.price}
             </h4>
+            {/*Delete Cart*/}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-3 cursor-pointer shrink-0 fill-[#333] hover:fill-red-500 ml-auto"

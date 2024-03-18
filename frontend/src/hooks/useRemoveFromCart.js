@@ -19,10 +19,10 @@ export const useRemoveFromCart = () => {
             color: "#fff",
           },
         });
-        console.log(cart);
+        // console.log(cart);
         const newCart = cart.filter((book) => book.bookId._id !== bookId);
-        console.log("New cart");
-        console.log(newCart);
+        // console.log("New cart");
+        // console.log(newCart);
         setCart(newCart);
       })
       .catch((err) => {

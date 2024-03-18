@@ -1,12 +1,13 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { userGetCart } from "./useGetCart";
+import { CartContext } from "../store/cart";
 
 export const useAddToCart = () => {
   const [loading, setLoading] = useState(false);
 
-  const { cart, setCart } = userGetCart();
+  const { cart, setCart } = useContext(CartContext);
 
   const addToCart = async ({ bookId }) => {
     setLoading(true);
@@ -14,10 +15,8 @@ export const useAddToCart = () => {
     await axios
       .post("/api/v1/cart/addbooks", { bookId })
       .then((response) => {
-        console.log(response.data);
         toast.success(response.data.message);
-
-        // setCart(newCart);
+        setCart(response.data.cart);
       })
       .catch((err) => {
         console.log(err);

@@ -83,6 +83,12 @@ export const addBookToCart = async (req, res) => {
         (book) => book.bookId.toString() === bookId.toString(),
       );
       if (FindBookInCart) {
+        if (FindBookInCart.quantity === 5) {
+          return res.status(400).json({
+            status: false,
+            message: "Cannot add more than 5 books of same type to cart",
+          });
+        }
         FindBookInCart.quantity = FindBookInCart.quantity + 1;
       } else {
         cart.books.push({
@@ -236,7 +242,7 @@ export const removeBookFromCart = async (req, res) => {
 
 export const decreaseBookCount = async (req, res) => {
   try {
-    const { bookId } = req.body;
+    const { bookId } = req.params;
     const { id: userId } = req.user;
 
     if (!bookId) {
@@ -282,6 +288,7 @@ export const decreaseBookCount = async (req, res) => {
       return res.status(200).json({
         status: true,
         message: "Book count decreased successfully",
+        cart: userCart,
       });
     }
 
@@ -338,6 +345,63 @@ export const getCartTotalPrice = async (req, res) => {
     });
   } catch (err) {
     console.log("Error in get cart total price " + err);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// <---------------------------Increase the count of book in cart ------------------------->
+
+export const increaseCountOfBook = async (req, res) => {
+  try {
+    const { bookId } = req.params;
+    const { id: userId } = req.user;
+
+    const validMongoId = mongoose.Types.ObjectId.isValid(bookId);
+
+    if (!validMongoId) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid book id",
+      });
+    }
+
+    const userCart = await Cart.findOne({ userId });
+
+    if (!userCart) {
+      return res.status(400).json({
+        status: false,
+        message: "Cart not found",
+      });
+    }
+
+    const bookPresent = userCart.books.find(
+      (book) => book.bookId.toString() === bookId.toString(),
+    );
+
+    if (!bookPresent) {
+      return res.status(400).json({
+        status: false,
+        message: "Book not found in cart",
+      });
+    }
+    if (bookPresent.quantity === 5) {
+      return res.status(400).json({
+        status: false,
+        message: "Cannot add more than 5 books of same type",
+      });
+    }
+    bookPresent.quantity = bookPresent.quantity + 1;
+    await userCart.save();
+    return res.status(200).json({
+      status: true,
+      message: "Book count increased successfully",
+      cart: userCart,
+    });
+  } catch (err) {
+    console.log("Error in increase book count " + err);
     return res.status(500).json({
       status: false,
       message: "Internal server error",

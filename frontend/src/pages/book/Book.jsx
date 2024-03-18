@@ -59,7 +59,7 @@ const Book = () => {
                   ${singleBook?.price}
                 </p>
                 <p className="text-gray-400 text-xl">
-                  <strike>${singleBook?.price + 50}</strike>{" "}
+                  <strike>${singleBook?.price + 5}</strike>{" "}
                   <span className="text-sm ml-1">Tax included</span>
                 </p>
               </div>
@@ -111,7 +111,11 @@ const Book = () => {
                   className="min-w-[200px] px-4 py-2.5 border border-[#333] bg-transparent hover:bg-gray-50 text-[#333] text-sm font-bold rounded"
                   onClick={handleAddToCart}
                 >
-                  Add to cart
+                  {loadingAddToCart ? (
+                    <span className="loading loading-spinner"></span>
+                  ) : (
+                    "Add to cart"
+                  )}
                 </button>
               </div>
             </div>
