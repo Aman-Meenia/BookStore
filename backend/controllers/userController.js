@@ -3,7 +3,7 @@ import { uploadOnCloudinary } from "../utils/fileUpload.js";
 import { generateAccessAndRefreshToken } from "../utils/generateAccessAndRefreshToken.js";
 import { sendEmailToUser } from "../utils/mail.js";
 import crypto from "crypto";
-
+import validator from "validator";
 //<----------------------------------- SIGNUP USER ------------------------------------->
 export const signupUser = async (req, res) => {
   try {
@@ -321,42 +321,95 @@ export const updateProfilePic = async (req, res) => {
 
 export const updateDetail = async (req, res) => {
   try {
-    const { fullName, password, email } = req.body;
-    const user = req.user;
-    let update = false;
-    if (fullName) {
-      user.fullName = fullName;
-      update = true;
+    let { userName, fullName, email, gender } = req.body;
+    userName = userName.trim();
+    fullName = fullName.trim();
+    email = email.trim();
+    if (!userName || !fullName || !email || !gender) {
+      return res.status(400).json({
+        status: false,
+        message: "All fields are required",
+      });
     }
-    if (password) {
-      user.password = password;
-      update = true;
-    }
-
-    if (email) {
-      const existedUser = await User.findOne({ email });
-      if (existedUser && user.email !== email) {
-        return res.status(400).json({
-          status: false,
-          message: "User with email already exists",
-        });
-      }
-
-      user.email = email;
-      update = true;
+    console.log(req.user._id);
+    // check userName already present
+    const userNameCheck = await User.findOne({ userName });
+    if (
+      userNameCheck &&
+      userNameCheck._id.toString() !== req.user._id.toString()
+    ) {
+      return res.status(400).json({
+        status: false,
+        message: "User name already exists",
+      });
     }
 
-    await user.save();
+    // check email already use
 
+    const emailCheck = await User.findOne({ email });
+    console.log(emailCheck);
+    if (emailCheck && emailCheck._id.toString() !== req.user._id.toString()) {
+      console.log(emailCheck._id, req.user._id);
+      return res.status(400).json({
+        status: false,
+        message: "Email already exists",
+      });
+    }
+
+    if (gender !== "male" && gender !== "female" && gender !== "other") {
+      return res.status(400).json({
+        status: false,
+        message: "Gender is not valid",
+      });
+    }
+
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({
+        status: false,
+        message: "Email is not valid",
+      });
+    }
+
+    await User.findByIdAndUpdate(req.user._id, {
+      userName,
+      fullName,
+      email,
+      gender,
+    });
     return res.status(200).json({
       status: true,
-      message: "Detail updated successfully",
+      message: "User details updated successfully",
     });
   } catch (err) {
     console.log("Error while updateing detials" + err.message);
     return res.status(500).json({
       status: false,
       message: err.message,
+    });
+  }
+};
+
+// <---------------------------Get Profile Details------------------------------------>
+
+export const getProfileDetails = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id, {
+      fullName: 1,
+      userName: 1,
+      email: 1,
+      gender: 1,
+      profilePic: 1,
+    });
+    return res.status(200).json({
+      status: true,
+      message: "User details fetched successfully",
+      data: user,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
     });
   }
 };

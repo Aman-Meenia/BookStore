@@ -28,6 +28,9 @@ import BookDetailContextProvider from "./store/fetchForUpdate.jsx";
 import ContactPage from "./pages/contact/ContactPage.jsx";
 import UserProfile from "./pages/profile/UserProfile.jsx";
 import CartContextProvider from "./store/cart.jsx";
+import Orders from "./pages/order/Orders.jsx";
+import OrderContextProvider from "./store/order.jsx";
+import ProfileContextProvider from "./store/profile.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,7 +47,9 @@ const router = createBrowserRouter(
         <Route path="/wishlist" element={<WishList />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/profile" element={<UserProfile />} />
+        <Route path="/orders" element={<Orders />} />
       </Route>
+
       <Route path="/contact" element={<ContactPage />} />
 
       {/* protected routes */}
@@ -60,8 +65,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <BooksContextProvider>
     <BookDetailContextProvider>
       <CartContextProvider>
-        <Toaster />
-        <RouterProvider router={router} />
+        <OrderContextProvider>
+          <ProfileContextProvider>
+            <Toaster />
+            <RouterProvider router={router} />
+          </ProfileContextProvider>
+        </OrderContextProvider>
       </CartContextProvider>
     </BookDetailContextProvider>
   </BooksContextProvider>,

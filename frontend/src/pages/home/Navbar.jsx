@@ -4,18 +4,25 @@ import { useNavBarCart } from "../../hooks/useNavBarCart";
 import { CartContext } from "../../store/cart";
 import { Link } from "react-router-dom";
 import { userGetCart } from "../../hooks/useGetCart";
+import { useGetInfo } from "../../hooks/useGetInfo";
+import { ProfileContext } from "../../store/profile";
+import { useLogout } from "../../hooks/useLogout";
 const Navbar = () => {
   const { navBarCart, setNavBarCart } = useContext(CartContext);
 
   const { getbillNavBar } = useNavBarCart();
   const { loading, getCart } = userGetCart();
   const { cart, setCart } = useContext(CartContext);
+  const { profile, setProfile } = useContext(ProfileContext);
+
+  const { getInfoLoading, getInfo } = useGetInfo();
+
   // Also change when cart is updated
   useEffect(() => {
     const fun = async () => {
       await getbillNavBar();
+      await getInfo();
     };
-    console.log("function called");
     fun();
   }, [cart, setCart]);
 
@@ -23,11 +30,20 @@ const Navbar = () => {
     await getCart();
   };
 
+  // Logout user
+  const { logoutLoading, logout } = useLogout();
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    await logout();
+  };
+
   return (
     <>
       <div className="navbar bg-base-100">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl">Book Store</a>
+          <Link to="/" className="btn btn-ghost text-xl">
+            Book Store
+          </Link>
         </div>
 
         {/* search bar  */}
@@ -101,10 +117,7 @@ const Navbar = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
+                <img alt="Profile Pic" src={profile?.profilePic} />
               </div>
             </div>
             <ul
@@ -112,16 +125,16 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a className="justify-between">
+                <Link to="/profile" className="justify-between">
                   Profile
                   <span className="badge">New</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a>Settings</a>
+                <Link to="/orders">Orders</Link>
               </li>
               <li>
-                <a>Logout</a>
+                <button onClick={handleLogout}>Logout</button>
               </li>
             </ul>
           </div>

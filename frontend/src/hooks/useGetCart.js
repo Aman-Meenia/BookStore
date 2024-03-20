@@ -14,9 +14,9 @@ export const userGetCart = () => {
     await axios
       .get("/api/v1/cart/getbooks")
       .then((response) => {
-        console.log("response ");
-        console.log(response);
-        console.log("user Get cart first");
+        // console.log("response ");
+        // console.log(response);
+        // console.log("user Get cart first");
 
         setCart(response.data.cart);
       })

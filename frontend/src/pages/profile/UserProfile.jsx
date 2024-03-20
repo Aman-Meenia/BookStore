@@ -1,134 +1,194 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useGetInfo } from "../../hooks/useGetInfo";
+import { ProfileContext } from "../../store/profile";
+import { defaults } from "autoprefixer";
+import { useUpdateInfo } from "../../hooks/useUpateInfo";
 
 const UserProfile = () => {
+  const [details, setDetails] = useState({
+    email: "",
+    userName: "",
+    fullName: "",
+    gender: "",
+  });
+  const { getInfoLoading, getInfo } = useGetInfo();
+  const { profile, setProfile } = useContext(ProfileContext);
+  useEffect(() => {
+    const fun = async () => {
+      getInfo();
+    };
+    fun();
+  }, []);
+
+  useEffect(() => {
+    if (profile) {
+      setDetails({
+        email: profile.email || "",
+        userName: profile.userName || "",
+        fullName: profile.fullName || "",
+        gender: profile.gender || "",
+      });
+    }
+  }, [profile]);
+
+  // update details
+  const { updateLoading, updateInfo } = useUpdateInfo();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    await updateInfo({
+      userName: details.userName,
+      fullName: details.fullName,
+      email: details.email,
+      gender: details.gender,
+    });
+  };
+
   return (
-    <section className="bg-white dark:bg-gray-900">
-      <div className="max-w-2xl px-4 py-8 mx-auto lg:py-16">
-        <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-          Update product
-        </h2>
+    <>
+      {getInfoLoading && (
+        <div className="w-full h-screen flex justify-center items-center">
+          <div
+            className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full"
+            role="status"
+          >
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
 
-        <form action="#">
-          <div className=" flex justify-center">
-            <img
-              className="rounded-full w-60 h-60"
-              src="http://surl.li/rkylt"
-              alt="image description"
-            />
-          </div>
+      <section className="bg-white dark:bg-gray-900">
+        <div className="max-w-2xl px-4 py-8 mx-auto lg:py-16">
+          <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+            Update Profile
+          </h2>
 
-          <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
-            <div className="sm:col-span-2">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Product Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                value="Apple iMac 27&ldquo;"
-                placeholder="Type product name"
-                required=""
+          <form action="#">
+            <div className=" flex justify-center">
+              <img
+                className="rounded-full w-60 h-60"
+                src={profile?.profilePic}
+                alt="image description"
               />
             </div>
-            <div className="w-full">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Brand
-              </label>
-              <input
-                type="text"
-                name="brand"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                value="Apple"
-                placeholder="Product brand"
-                required=""
-              />
+
+            <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+              <div className="sm:col-span-2">
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  User Name
+                </label>
+                <input
+                  type="text"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="username"
+                  value={details.userName}
+                  onChange={(e) => {
+                    setDetails({ ...details, userName: e.target.value });
+                  }}
+                />
+              </div>
             </div>
-            <div className="w-full">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Price
-              </label>
-              <input
-                type="number"
-                name="price"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                value="2999"
-                placeholder="$299"
-                required=""
-              />
+            <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+              <div className="sm:col-span-2">
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="fullname"
+                  value={details.fullName}
+                  onChange={(e) => {
+                    setDetails({ ...details, fullName: e.target.value });
+                  }}
+                />
+              </div>
             </div>
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Category
-              </label>
-              <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                <option selected="">Electronics</option>
-                <option value="TV">TV/Monitors</option>
-                <option value="PC">PC</option>
-                <option value="GA">Gaming/Console</option>
-                <option value="PH">Phones</option>
-              </select>
+            <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+              <div className="sm:col-span-2">
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Email
+                </label>
+                <input
+                  type="text"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  placeholder="email"
+                  value={details.email}
+                  onChange={(e) => {
+                    setDetails({ ...details, email: e.target.value });
+                  }}
+                />
+              </div>
             </div>
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Item Weight (kg)
-              </label>
-              <input
-                type="number"
-                name="item-weight"
-                id="item-weight"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                value="15"
-                placeholder="Ex. 12"
-                required=""
-              />
+            <div className="grid gap-4 mb-4 sm:grid-cols-3 sm:gap-6 sm:mb-5">
+              <div className=" w-full flex justify-between">
+                <div className="flex gap-4">
+                  <input
+                    type="radio"
+                    id="Male"
+                    name="gender"
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    value="male"
+                    checked={details.gender === "male"}
+                    onChange={(e) => {
+                      setDetails({ ...details, gender: e.target.value });
+                    }}
+                  />
+                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Male
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="radio"
+                      id="female"
+                      name="gender"
+                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      value="female"
+                      checked={details.gender === "female"}
+                      onChange={(e) => {
+                        setDetails({ ...details, gender: e.target.value });
+                      }}
+                    />
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Female
+                    </label>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <input
+                      type="radio"
+                      id="other"
+                      name="gender"
+                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      value="other"
+                      checked={details.gender === "other"}
+                      onChange={(e) => {
+                        setDetails({ ...details, gender: e.target.value });
+                      }}
+                    />
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Other
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="sm:col-span-2">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Description
-              </label>
-              <textarea
-                id="description"
-                rows="8"
-                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Write a product description here..."
-              >
-                Standard glass, 3.8GHz 8-core 10th-generation Intel Core i7
-                processor, Turbo Boost up to 5.0GHz, 16GB 2666MHz DDR4 memory,
-                Radeon Pro 5500 XT with 8GB of GDDR6 memory, 256GB SSD storage,
-                Gigabit Ethernet, Magic Mouse 2, Magic Keyboard - US
-              </textarea>
+
+            {/*Handle Submit*/}
+            <div className="flex justify-center">
+              <button onClick={handleSubmit} className="btn btn-primary btn-sm">
+                {updateLoading ? (
+                  <span className="loading loading-spinner"> </span>
+                ) : (
+                  "Submit"
+                )}
+              </button>
             </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <button
-              type="submit"
-              className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-            >
-              Update product
-            </button>
-            <button
-              type="button"
-              className="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-            >
-              <svg
-                className="w-5 h-5 mr-1 -ml-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              Delete
-            </button>
-          </div>
-        </form>
-      </div>
-    </section>
+          </form>
+        </div>
+      </section>
+    </>
   );
 };
 

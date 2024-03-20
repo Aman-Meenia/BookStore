@@ -122,3 +122,244 @@ export const orderBooks = async (req, res) => {
     });
   }
 };
+
+// <----------------------------------Update Order Status-------------------------------->
+
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    if (!status) {
+      return res.status(400).json({
+        status: false,
+        message: "Status is required",
+      });
+    }
+
+    const validateId = mongoose.Types.ObjectId.isValid(id);
+    if (!validateId) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid order id",
+      });
+    }
+    const validateStatus = ["pending", "processing", "shipped", "delivered"];
+    if (!validateStatus.includes(status)) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid status",
+      });
+    }
+
+    const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+    if (!order) {
+      return res.status(400).json({
+        status: false,
+        message: "Order not found",
+      });
+    }
+    return res.status(200).json({
+      status: true,
+      message: "Order status updated successfully",
+      data: order,
+    });
+  } catch (err) {
+    console.log("Error in update Order Status Controller " + err.message);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// <-------------------------------Get Pending Orders---------------------------------->
+
+export const getPendingOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ status: "pending" });
+    return res.status(200).json({
+      status: true,
+      message: "Orders fetched successfully",
+      data: orders,
+    });
+  } catch (err) {
+    console.log("Error in get Pending Orders Controller " + err.message);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// <-------------------------------Get Shipped Orders---------------------------------->
+
+export const getShippedOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ status: "shipped" });
+    return res.status(200).json({
+      status: true,
+      message: "Orders fetched successfully",
+      data: orders,
+    });
+  } catch (err) {
+    console.log("Error in get Shipped Orders Controller " + err.message);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// <-------------------------------Get Delivered Orders---------------------------------->
+
+export const getDeliveredOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ status: "delivered" });
+    return res.status(200).json({
+      status: true,
+      message: "Orders fetched successfully",
+      data: orders,
+    });
+  } catch (err) {
+    console.log("Error in get Delivered Orders Controller " + err.message);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// <----------------------------Cancel Order-------------------------------->
+
+export const cancelOrder = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { userId: _id } = req.user._id;
+
+    if (!orderId) {
+      return res.status(400).json({
+        status: false,
+        message: "Order id is required",
+      });
+    }
+
+    const validateId = mongoose.Types.ObjectId.isValid(orderId);
+    if (!validateId) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid order id",
+      });
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(400).json({
+        status: false,
+        message: "Order not found",
+      });
+    }
+
+    const UpdateOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { status: "cancelled" },
+      { new: true },
+    );
+
+    return res.status(200).json({
+      status: true,
+      message: "Order cancelled successfully",
+      data: UpdateOrder,
+    });
+  } catch (err) {
+    console.log("Error in cancel Order Controller " + err.message);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// <-----------------------------------------Get All Orders By User Id ---------------------------------->
+
+export const getOrdersById = async (req, res) => {
+  try {
+    const orders = await Order.find(
+      { userId: req.user._id },
+      {
+        books: 1,
+        createdAt: 1,
+        status: 1,
+        totalPrice: 1,
+      },
+    );
+
+    const orderList = await Order.aggregate([
+      { $unwind: "$books" },
+      {
+        $lookup: {
+          from: "books", // Assuming the name of the collection where books are stored is "books"
+          localField: "books.bookId",
+          foreignField: "_id",
+          as: "books.bookDetails",
+        },
+      },
+      {
+        $addFields: {
+          "books.createdAt": "$createdAt",
+          "books.details": { $arrayElemAt: ["$books.bookDetails", 0] },
+        },
+      },
+
+      {
+        $project: {
+          status: 1,
+          "books.createdAt": 1,
+          "books.quantity": 1,
+          "books.bookId": 1,
+          "books.author": 1,
+          "books.bookDetails.title": 1,
+
+          "books.bookDetails.price": 1,
+          "books.bookDetails.images": 1,
+          "books.bookDetails.author": 1,
+        },
+      },
+    ]);
+
+    // const orderList = await Order.aggregate([
+    //   {
+    //     $unwind: "$books",
+    //   },
+    //   {
+    //     $addFields: {
+    //       "books.createdAt": "$createdAt",
+    //     },
+    //   },
+    //   {
+    //     $addFields: {
+    //       "books.createdAt": "$createdAt",
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: null,
+    //       books: { $push: "$books" },
+    //     },
+    //   },
+    //
+    // ]);
+
+    console.log(orders);
+    return res.status(200).json({
+      status: true,
+      message: "Orders fetched successfully",
+      data: orderList,
+    });
+  } catch (err) {
+    console.log("Error in get Orders Controller " + err.message);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};

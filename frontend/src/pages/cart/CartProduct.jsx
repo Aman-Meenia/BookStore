@@ -13,7 +13,7 @@ const CartProduct = ({ book }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const bookId = book.bookId._id;
-    console.log(bookId);
+    // console.log(bookId);
     removeFromCart({ bookId });
   };
 
@@ -35,7 +35,7 @@ const CartProduct = ({ book }) => {
     increaseCountOfBook({ bookId });
   };
 
-  console.log(book);
+  // console.log(book);
   return (
     <>
       <div className="lg:col-span-2 bg-white divide-y">

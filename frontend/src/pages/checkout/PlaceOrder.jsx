@@ -116,11 +116,58 @@ const PlaceOrder = () => {
                 placeholder="City"
                 className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none"
               />
-              <input
-                type="text"
-                placeholder="State"
-                className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none"
-              />
+              {/* <input */}
+              {/*   type="text" */}
+              {/*   placeholder="State" */}
+              {/*   className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none" */}
+              {/* /> */}
+              <select className="form-control px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none">
+                <option value=""> Select State</option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                <option value="Assam">Assam</option>
+                <option value="Bihar">Bihar</option>
+                <option value="Chhattisgarh">Chhattisgarh</option>
+                <option value="Goa">Goa</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Haryana">Haryana</option>
+                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                <option value="Jharkhand">Jharkhand</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Kerala">Kerala</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                <option value="Manipur">Manipur</option>
+                <option value="Meghalaya">Meghalaya</option>
+                <option value="Mizoram">Mizoram</option>
+                <option value="Nagaland">Nagaland</option>
+                <option value="Odisha">Odisha</option>
+                <option value="Punjab">Punjab</option>
+                <option value="Rajasthan">Rajasthan</option>
+                <option value="Sikkim">Sikkim</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Tripura">Tripura</option>
+                <option value="Telangana">Telangana</option>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="Uttarakhand">Uttarakhand</option>
+                <option value="West Bengal">West Bengal</option>
+                <option value="Andaman & Nicobar (UT)">
+                  Andaman & Nicobar (UT)
+                </option>
+                <option value="Chandigarh (UT)">Chandigarh (UT)</option>
+                <option value="Dadra & Nagar Haveli and Daman & Diu (UT)">
+                  Dadra & Nagar Haveli and Daman & Diu (UT)
+                </option>
+                <option value="Delhi [National Capital Territory (NCT)]">
+                  Delhi [National Capital Territory (NCT)]
+                </option>
+                <option value="Jammu & Kashmir (UT)">
+                  Jammu & Kashmir (UT)
+                </option>
+                <option value="Ladakh (UT)">Ladakh (UT)</option>
+                <option value="Lakshadweep (UT)">Lakshadweep (UT)</option>
+                <option value="Puducherry (UT)">Puducherry (UT)</option>
+              </select>
               <input
                 type="text"
                 placeholder="Zip Code"

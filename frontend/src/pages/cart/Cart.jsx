@@ -17,6 +17,8 @@ const Cart = () => {
     };
     fun();
   }, []);
+  // console.log("Cart is ");
+  // console.log(cart);
 
   return (
     <>
