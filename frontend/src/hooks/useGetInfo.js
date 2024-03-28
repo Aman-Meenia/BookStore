@@ -9,8 +9,10 @@ export const useGetInfo = () => {
   const getInfo = async () => {
     setLoading(true);
     await axios
-      .get("api/v1/user/getdetail")
+      .get("/api/v1/user/getdetail")
       .then((response) => {
+        // console.log("Profile set");
+        // console.log(response);
         setProfile(response.data.data);
       })
       .catch((err) => {

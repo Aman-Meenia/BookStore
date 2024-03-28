@@ -50,14 +50,16 @@ const AddProduct = () => {
   return (
     <>
       <div className="font-[sans-serif] text-[#333]  w-full ">
-        <h1 className="text-3xl font-bold align-center text-center">
+        <h1 className="text-3xl font-bold align-center text-center p-4">
           Add New Book
         </h1>
         <form
-          className="font-[sans-serif] text-[#333] max-w-4xl mx-auto px-6 my-6"
+          className="font-[sans-serif] text-[#333]  mx-auto px-6 my-6 max-w-3xl   md:w-3/4 sm:w-full
+bg-white shadow-[0_2px_10px_-3px_rgba(63,81,237,34)]
+          "
           onSubmit={handleSubmit}
         >
-          <div className="grid sm:grid-cols-2 gap-10">
+          <div className="grid sm:grid-cols-2 gap-10 p-4">
             {/* Title  */}
             <div className="relative flex items-center">
               <label className="text-[13px] absolute top-[-10px] left-0 font-semibold">
@@ -183,7 +185,9 @@ const AddProduct = () => {
 
           {/* Add File*/}
           <input
-            className=" m-2 block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            className=" m-2 block w-full text-lg text-gray-900 border border-gray-300 rounded-lg
+            cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700
+            dark:border-gray-600 dark:placeholder-gray-400"
             id="large_size"
             type="file"
             onChange={handleFileChange}
@@ -191,7 +195,7 @@ const AddProduct = () => {
           {/* Submit button  */}
           <button
             type="submit"
-            className="mt-10 px-2 py-2.5 w-full rounded text-sm font-semibold bg-[#333] text-white hover:bg-[#222]"
+            className="mt-4 mb-4  px-2 py-2.5 w-full rounded text-sm font-semibold bg-[#333] text-white hover:bg-[#222] "
           >
             {loading ? (
               <span className="loading loading-spinner"> </span>

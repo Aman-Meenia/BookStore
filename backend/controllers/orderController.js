@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
+import crypto from "crypto";
 
 import User from "../models/userModel.js";
 import Order from "../models/orderModel.js";
 import Cart from "../models/cartModel.js";
 import { validate } from "email-validator";
+import instance from "../index.js";
 
 // <-----------------------------------------Order Books ---------------------------------->
 
@@ -18,7 +20,7 @@ function validatePIN(pin) {
   return pinCodePattern.test(pin);
 }
 
-export const orderBooks = async (req, res) => {
+export const validateOrder = async (req, res) => {
   try {
     const {
       firstName,
@@ -29,7 +31,7 @@ export const orderBooks = async (req, res) => {
       state,
       city,
       pincode,
-    } = req.body;
+    } = req.body?.detail;
 
     if (
       !firstName ||
@@ -103,13 +105,31 @@ export const orderBooks = async (req, res) => {
       city,
       pincode,
       total: totalPrice,
+      status: "pending",
+      payment: "pending",
     });
 
-    await order.save();
+    // remove the previouse order from database if any payment pending is present
+
+    const prevOrder = await Order.findOne({
+      $and: [{ userId: id, payment: "pending" }],
+    });
+    if (prevOrder) {
+      // console.log("Delete Previous Order");
+      // console.log(prevOrder);
+      await Order.findByIdAndDelete(prevOrder._id);
+      // console.log("delted j");
+    }
+    // console.log(prevOrder);
+
+    //
     // as order is done successfully now empty the cart
 
-    await Cart.findByIdAndDelete(userCart._id);
+    // const cartDelete = await Cart.findByIdAndDelete(userCart._id);
+    // console.log(cartDelete);
 
+    console.log("saving");
+    await order.save();
     return res.status(200).json({
       status: true,
       message: "Order placed successfully",
@@ -119,6 +139,99 @@ export const orderBooks = async (req, res) => {
     return res.status(500).json({
       status: false,
       message: "Internal server error",
+    });
+  }
+};
+
+//  <--------------------------------Create New Order--------------------------------->
+
+export const createRazorPayOrder = async (req, res) => {
+  try {
+    const { amount } = req.body;
+    const key = process.env.RAZORPAY_KEY_ID;
+    if (!amount) {
+      return res.status(400).json({
+        status: false,
+        message: "Amount is required",
+      });
+    }
+    const options = {
+      amount: amount * 100,
+      currency: "INR",
+      receipt: "receipt#1",
+      payment_capture: 1,
+    };
+
+    const order = await instance.orders.create(options);
+
+    return res.status(200).json({
+      status: true,
+      message: "Order created successfully",
+      order,
+      key,
+    });
+  } catch (err) {
+    console.log("Error in create order controller ");
+    console.log(err);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// <---------------------------------- Make Payment Status Paid and Save Orders-------------------------------->
+
+export const makePaymentStatusPaid = async (req, res) => {
+  try {
+    // const { order } = req.body;
+    const { id: userId } = req.user;
+    console.log(userId);
+    const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
+      req.body?.body;
+    console.log(razorpay_payment_id, razorpay_order_id, razorpay_signature);
+
+    // console.log(razorpay_payment_id, razorpay_order_id, razorpay_signature);
+    const generated_signature = razorpay_order_id + "|" + razorpay_payment_id;
+
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(generated_signature)
+      .digest("hex");
+
+    if (expectedSignature == razorpay_signature) {
+      console.log("Valid signature");
+    } else {
+      console.log("Invalid signature");
+      return res.status(400).json({
+        status: false,
+        message: "Invalid signature",
+      });
+    }
+
+    const paymentPending = await Order.findOneAndUpdate(
+      { $and: [{ userId }, { payment: "pending" }] },
+      { payment: "paid" },
+      { new: true },
+    );
+    console.log(paymentPending);
+
+    const userCart = await Cart.findOne({ userId });
+
+    const cartDelete = await Cart.findByIdAndDelete(userCart._id);
+    console.log(cartDelete);
+
+    return res.status(200).json({
+      status: true,
+      message: "Payment status updated successfully",
+      paymentDetail: paymentPending,
+    });
+  } catch (err) {
+    console.log("Error in make payment status paid controller " + err.message);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+      err: err,
     });
   }
 };

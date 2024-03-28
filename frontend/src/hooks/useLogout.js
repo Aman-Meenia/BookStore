@@ -11,6 +11,8 @@ export const useLogout = () => {
     await axios
       .get("api/v1/user/logout")
       .then((response) => {
+        console.log(response);
+        console.log("LOgout ");
         toast.success(response.data.message);
       })
       .catch((err) => {

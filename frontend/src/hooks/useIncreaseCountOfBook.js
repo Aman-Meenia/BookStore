@@ -11,7 +11,13 @@ export const useIncreaseCountOfBook = () => {
     await axios
       .get(`api/v1/cart/increasequantity/${bookId}`)
       .then((response) => {
-        toast.success(response.data.message);
+        toast.success(response.data.message, {
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
         setLoading(false);
 
         const updateCart = cart.map((book) => {
@@ -24,7 +30,13 @@ export const useIncreaseCountOfBook = () => {
         setCart(updateCart);
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        toast.error(err.response.data.message, {
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
       })
       .finally(() => {
         setLoading(false);

@@ -1,20 +1,45 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import AddProduct from "./AddProduct";
+import { Link } from "react-router-dom";
+import { useGetInfo } from "../hooks/useGetInfo";
+import { ProfileContext } from "../store/profile";
+import { useLogout } from "../hooks/useLogout";
 
 const Sidebar = () => {
+  const { getInfo } = useGetInfo();
+  const { profile, setProfile } = useContext(ProfileContext);
+
+  useEffect(() => {
+    const fun = async () => {
+      console.log("fun called");
+      await getInfo();
+    };
+    // getInfo();
+
+    fun();
+  }, []);
+
+  const { logoutLoading, logout } = useLogout();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    await logout();
+  };
+
+  console.log(profile);
+
   return (
     <nav className="bg-[#09090a] shadow-lg h-screen  top-0 left-0 min-w-[250px] py-6 px-6 font-[sans-serif] flex flex-col overflow-auto">
       <div className="flex flex-wrap items-center cursor-pointer">
         <div className="relative">
           <img
-            src="https://readymadeui.com/profile_2.webp"
+            src={profile.profilePic}
             className="w-12 h-12 rounded-full border-white"
           />
           <span className="h-3 w-3 rounded-full bg-green-600 border-2 border-white block absolute bottom-0 right-0"></span>
         </div>
         <div className="ml-4">
-          <p className="text-sm text-gray-300">John Doe</p>
-          <p className="text-xs text-gray-400 mt-1">D.IN Medicine</p>
+          <p className="text-sm text-gray-300">{profile.fullName}</p>
         </div>
       </div>
       <div className="relative bg-[#1f1f22] px-4 py-3 rounded-md my-8">
@@ -62,25 +87,6 @@ const Sidebar = () => {
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
               className="w-[18px] h-[18px] mr-4"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M13 .5H3A2.503 2.503 0 0 0 .5 3v10A2.503 2.503 0 0 0 3 15.5h10a2.503 2.503 0 0 0 2.5-2.5V3A2.503 2.503 0 0 0 13 .5ZM14.5 13a1.502 1.502 0 0 1-1.5 1.5H3A1.502 1.502 0 0 1 1.5 13v-.793l3.5-3.5 1.647 1.647a.5.5 0 0 0 .706 0L10.5 7.207V8a.5.5 0 0 0 1 0V6a.502.502 0 0 0-.5-.5H9a.5.5 0 0 0 0 1h.793L7 9.293 5.354 7.647a.5.5 0 0 0-.707 0L1.5 10.793V3A1.502 1.502 0 0 1 3 1.5h10A1.502 1.502 0 0 1 14.5 3Z"
-                data-original="#000000"
-              />
-            </svg>
-            <span>Insight</span>
-          </a>
-        </li>
-        <li>
-          <a
-            href="javascript:void(0)"
-            className="text-gray-300 hover:text-white text-sm flex items-center rounded-md"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              className="w-[18px] h-[18px] mr-4"
               viewBox="0 0 512 512"
             >
               <path
@@ -96,7 +102,33 @@ const Sidebar = () => {
                 data-original="#000000"
               />
             </svg>
-            <span>People & Terms</span>
+            <span>All Users</span>
+          </a>
+        </li>
+
+        <li>
+          <a
+            href="javascript:void(0)"
+            className="text-gray-300 hover:text-white text-sm flex items-center rounded-md"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              className="w-[18px] h-[18px] mr-4"
+              viewBox="0 0 511.414 511.414"
+            >
+              <path
+                d="M497.695 108.838a16.002 16.002 0 0 0-9.92-14.8L261.787 1.2a16.003 16.003 0 0 0-12.16 0L23.639 94.038a16 16 0 0 0-9.92 14.8v293.738a16 16 0 0 0 9.92 14.8l225.988 92.838a15.947 15.947 0 0 0 12.14-.001c.193-.064-8.363 3.445 226.008-92.837a16 16 0 0 0 9.92-14.8zm-241.988 76.886-83.268-34.207L352.39 73.016l88.837 36.495zm-209.988-51.67 71.841 29.513v83.264c0 8.836 7.164 16 16 16s16-7.164 16-16v-70.118l90.147 37.033v257.797L45.719 391.851zM255.707 33.297l55.466 22.786-179.951 78.501-61.035-25.074zm16 180.449 193.988-79.692v257.797l-193.988 79.692z"
+                data-original="#000000"
+              />
+            </svg>
+
+            <Link
+              to="/admin/updatebook"
+              className="text-gray-300 hover:text-white text-sm flex items-center rounded-md"
+            >
+              <span type="button">Update Books</span>
+            </Link>
           </a>
         </li>
         <li>
@@ -115,7 +147,10 @@ const Sidebar = () => {
                 data-original="#000000"
               />
             </svg>
-            <span>Products</span>
+
+            <Link to="/admin/allbooks">
+              <span>All Books</span>
+            </Link>
           </a>
         </li>
         <li>
@@ -134,7 +169,9 @@ const Sidebar = () => {
                 data-original="#000000"
               />
             </svg>
-            <span>Add Product</span>
+            <Link to="/admin/addbook">
+              <span type="button">Add Book</span>
+            </Link>
           </a>
         </li>
         <li>
@@ -192,7 +229,7 @@ const Sidebar = () => {
                 data-original="#000000"
               />
             </svg>
-            <span>Logout</span>
+            <span type="button">Logout</span>
           </a>
         </li>
       </ul>

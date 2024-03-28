@@ -77,11 +77,13 @@ const UpdateProduct = () => {
   return (
     <>
       <div className="font-[sans-serif] text-[#333]  w-full ">
-        <h1 className="text-3xl font-bold align-center text-center">
+        <h1 className="text-3xl font-bold align-center text-center p-4">
           Update book detail
         </h1>
         <form
-          className="font-[sans-serif] text-[#333] max-w-4xl mx-auto px-6 my-6"
+          className="font-[sans-serif] text-[#333] max-w-4xl mx-auto px-6 my-6 md:w-3/4 sm:w-full
+          bg-white  rounded-md p-6 shadow-[0_2px_10px_-3px_rgba(63,81,237,34)]
+          "
           onSubmit={handleSubmit}
         >
           <div className="grid sm:grid-cols-2 gap-10">

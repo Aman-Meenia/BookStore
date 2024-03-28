@@ -11,7 +11,13 @@ export const useDecreaseCountOfBook = () => {
     await axios
       .get(`api/v1/cart/decreasequantity/${bookId}`)
       .then((response) => {
-        toast.success(response.data.message);
+        toast.success(response.data.message, {
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
         // console.log(response.data.cart);
         // setCart(response.data.cart);
         // const newCart = response.data.cart;
@@ -26,7 +32,13 @@ export const useDecreaseCountOfBook = () => {
         setCart(updatedCart);
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        toast.error(err.response.data.message, {
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
       })
       .finally(() => {
         setLoading(false);

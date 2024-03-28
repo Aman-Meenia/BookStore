@@ -44,6 +44,7 @@ const UserProfile = () => {
       gender: details.gender,
     });
   };
+  console.log(profile);
 
   return (
     <>

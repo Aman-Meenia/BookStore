@@ -1,6 +1,128 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import axios, { isAxiosError } from "axios";
+import toast from "react-hot-toast";
+import { CartContext } from "../../store/cart";
 
 const PlaceOrder = () => {
+  const { navBarCart, setNavBarCart } = useContext(CartContext);
+  const [detail, setDetail] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNo: "",
+    address: "",
+    state: "",
+    city: "",
+    pincode: "",
+  });
+
+  // Function to handle input key pressed is numeric or not
+  const handleKeyPress = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+    // handle delete key
+    if (event.key === "Backspace") {
+      return;
+    }
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
+  };
+
+  // Function to handle form submission
+  const handlePayment = async (event) => {
+    // console.log(detail.firstName);
+    let razorOrderDetail = "";
+
+    console.log(detail);
+    let isError = false;
+    await axios
+      .post("/api/v1/order", {
+        detail,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+
+      .catch((err) => {
+        console.log("Error in the order ");
+        // console.log(err.response.data);
+        toast.error(err.response.data.message);
+        isError = true;
+      });
+    if (isError) return;
+    await axios
+      .post("api/v1/order/create", {
+        amount: navBarCart.bill,
+      })
+      .then((res) => {
+        console.log(res.data);
+        razorOrderDetail = res.data;
+      })
+      .catch((err) => {
+        // console.log(err.response);
+        console.log("eroor in create order");
+        toast.error(err.response.data.message);
+        isError = true;
+        return;
+      });
+    if (isError) return;
+    // console.log("KEY IS", razorOrderDetail.key);
+
+    const options = {
+      key: razorOrderDetail.key, // Enter the Key ID generated from the Dashboard
+      amount: razorOrderDetail.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: "INR",
+      name: "Acme Corp",
+      description: "Test Transaction",
+      image: "https://avatar.iran.liara.run/public/1",
+      order_id: razorOrderDetail.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      // order_id: "12312",
+      handler: function (response) {
+        const body = response;
+        axios
+          .post("/api/v1/order/validatepayment", {
+            body,
+          })
+          .then((response) => {
+            console.log("payment done");
+            toast.success("Payment Successfull");
+            window.location.href = "/";
+          })
+          .catch((err) => {
+            // console.log(err);
+            toast.error(err.response.data.message);
+          });
+      },
+      prefill: {
+        name: "Gaurav Kumar",
+        email: "gaurav.kumar@example.com",
+        contact: "9000090000",
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+    var rzp1 = new window.Razorpay(options);
+    rzp1.on("payment.failed", function (response) {
+      console.log(response);
+      toast.error("Error while processing payment");
+      return;
+      // alert(response.error.code);
+      // alert(response.error.description);
+      // alert(response.error.source);
+      // alert(response.error.step);
+      // alert(response.error.reason);
+      // alert(response.error.metadata.order_id);
+      // alert(response.error.metadata.payment_id);
+    });
+
+    rzp1.open();
+    event.preventDefault();
+  };
+
   return (
     <>
       <div className="xl:col-span-2 h-max rounded-md p-2 sticky top-0 ">
@@ -16,6 +138,10 @@ const PlaceOrder = () => {
                   type="text"
                   placeholder="First Name"
                   className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none"
+                  value={detail.firstName}
+                  onChange={(e) => {
+                    setDetail({ ...detail, firstName: e.target.value });
+                  }}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -36,6 +162,10 @@ const PlaceOrder = () => {
                   type="text"
                   placeholder="Last Name"
                   className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none"
+                  value={detail.lastName}
+                  onChange={(e) => {
+                    setDetail({ ...detail, lastName: e.target.value });
+                  }}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -56,6 +186,10 @@ const PlaceOrder = () => {
                   type="email"
                   placeholder="Email"
                   className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none"
+                  value={detail.email}
+                  onChange={(e) => {
+                    setDetail({ ...detail, email: e.target.value });
+                  }}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -87,6 +221,11 @@ const PlaceOrder = () => {
                   type="number"
                   placeholder="Phone No."
                   className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none"
+                  onKeyDown={handleKeyPress}
+                  value={detail.phoneNo}
+                  onChange={(e) => {
+                    setDetail({ ...detail, phoneNo: e.target.value });
+                  }}
                 />
                 <svg
                   fill="#bbb"
@@ -110,18 +249,32 @@ const PlaceOrder = () => {
                 type="text"
                 placeholder="Address Line"
                 className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none"
+                value={detail.address}
+                onChange={(e) => {
+                  setDetail({ ...detail, address: e.target.value });
+                }}
               />
               <input
                 type="text"
                 placeholder="City"
                 className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none"
+                value={detail.city}
+                onChange={(e) => {
+                  setDetail({ ...detail, city: e.target.value });
+                }}
               />
               {/* <input */}
               {/*   type="text" */}
               {/*   placeholder="State" */}
               {/*   className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none" */}
               {/* /> */}
-              <select className="form-control px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none">
+              <select
+                className="form-control px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none"
+                value={detail.state}
+                onChange={(e) =>
+                  setDetail({ ...detail, state: e.target.value })
+                }
+              >
                 <option value=""> Select State</option>
                 <option value="Andhra Pradesh">Andhra Pradesh</option>
                 <option value="Arunachal Pradesh">Arunachal Pradesh</option>
@@ -172,6 +325,11 @@ const PlaceOrder = () => {
                 type="text"
                 placeholder="Zip Code"
                 className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#333] outline-none"
+                onKeyDown={handleKeyPress}
+                value={detail.pincode}
+                onChange={(e) => {
+                  setDetail({ ...detail, pincode: e.target.value });
+                }}
               />
             </div>
             <div className="flex gap-6 max-sm:flex-col mt-10">
@@ -181,7 +339,9 @@ const PlaceOrder = () => {
               >
                 Cancel
               </button>
+
               <button
+                onClick={handlePayment}
                 type="button"
                 className="rounded-md px-6 py-3 w-full text-sm font-semibold bg-[#333] text-white hover:bg-[#222]"
               >

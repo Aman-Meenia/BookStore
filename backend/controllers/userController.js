@@ -400,6 +400,8 @@ export const getProfileDetails = async (req, res) => {
       gender: 1,
       profilePic: 1,
     });
+    console.log("get Detail called ");
+    console.log(user);
     return res.status(200).json({
       status: true,
       message: "User details fetched successfully",

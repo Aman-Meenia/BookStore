@@ -4,6 +4,7 @@ import { connectMongoDB } from "./db/connectMongoDb.js";
 import cookieParser from "cookie-parser";
 const app = express();
 import bodyParser from "body-parser";
+import cors from "cors";
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -14,6 +15,24 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
 const PORT = process.env.PORT || 3000;
+
+//<---------------CORS------------------->
+
+app.use(cors());
+
+//<---------------RAZORPAY------------------->
+import Razorpay from "razorpay";
+console.log(
+  process.env.RAZORPAY_KEY_ID,
+  "   secret ",
+  process.env.RAZORPAY_KEY_SECRET,
+);
+const instance = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
+
+export default instance;
 
 // <--------------------EXPRESS ROUTES--------------------->
 import userRouter from "./routes/userRoutes.js";

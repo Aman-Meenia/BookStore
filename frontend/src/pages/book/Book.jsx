@@ -6,6 +6,8 @@ import Reviews from "./Reviews";
 import { BooksContext } from "../../store/books";
 import { useGetBookById } from "../../hooks/useGetBookById";
 import { useAddToCart } from "../../hooks/useAddToCart";
+import { useGetInfo } from "../../hooks/useGetInfo";
+import { Link } from "react-router-dom";
 const Book = () => {
   const { singleBook, setSingleBook } = useContext(BooksContext);
   // console.log(singleBook);
@@ -19,11 +21,13 @@ const Book = () => {
   }, []);
 
   const { loadingAddToCart, addToCart } = useAddToCart();
+  const { getInfoLoading, getInfo } = useGetInfo();
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
 
     await addToCart({ bookId: singleBook?._id });
+    await getInfo();
   };
 
   return (
@@ -100,12 +104,15 @@ const Book = () => {
                 <h4 className="text-[#333] text-base">500 Reviews</h4>
               </div>
               <div className="flex flex-wrap gap-4 mt-10">
-                <button
-                  type="button"
-                  className="min-w-[200px] px-4 py-3 bg-[#333] hover:bg-[#111] text-white text-sm font-bold rounded"
-                >
-                  Buy now
-                </button>
+                <Link to={`/cart`}>
+                  <button
+                    type="button"
+                    className="min-w-[200px] px-4 py-3 bg-[#333] hover:bg-[#111] text-white text-sm font-bold rounded"
+                  >
+                    Buy now
+                  </button>
+                </Link>
+
                 <button
                   type="button"
                   className="min-w-[200px] px-4 py-2.5 border border-[#333] bg-transparent hover:bg-gray-50 text-[#333] text-sm font-bold rounded"

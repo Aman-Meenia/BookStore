@@ -15,12 +15,18 @@ export const useAddToCart = () => {
     await axios
       .post("/api/v1/cart/addbooks", { bookId })
       .then((response) => {
-        toast.success(response.data.message);
+        // console.log(response.data);
         setCart(response.data.cart);
       })
       .catch((err) => {
-        console.log(err);
-        toast.error(err.response.data.message);
+        // console.log(err);
+        toast.error(err.response.data.message, {
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
       })
       .finally(() => {
         setLoading(false);

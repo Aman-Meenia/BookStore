@@ -31,6 +31,7 @@ import CartContextProvider from "./store/cart.jsx";
 import Orders from "./pages/order/Orders.jsx";
 import OrderContextProvider from "./store/order.jsx";
 import ProfileContextProvider from "./store/profile.jsx";
+import AllBooks from "./admin/AllBooks.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -56,6 +57,7 @@ const router = createBrowserRouter(
       <Route path="/admin/" element={<AdminHome />}>
         <Route path="addbook" element={<AddProduct />} />
         <Route path="updatebook" element={<UpdateProduct />} />
+        <Route path="allbooks" element={<AllBooks />} />
       </Route>
     </Route>,
   ),

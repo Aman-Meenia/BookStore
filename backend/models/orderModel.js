@@ -74,6 +74,11 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    payment: {
+      type: String,
+      default: "pending",
+      enum: ["pending", "paid"],
+    },
   },
   {
     timestamps: true,
