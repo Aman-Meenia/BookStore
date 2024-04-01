@@ -220,6 +220,23 @@ export const getBooks = async (req, res) => {
   }
 };
 
+// <--------------------------- Get All Books Admin -------------------------------->
+export const getBooksAdmin = async (req, res) => {
+  try {
+    const books = await Book.find();
+    return res.status(200).json({
+      status: true,
+      message: "Books fetched successfully",
+      data: books,
+    });
+  } catch (err) {
+    console.log("Error in get Books Controller " + err);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
 // <----------------------------Get book by Id ------------------------------>
 
 export const getBookById = async (req, res) => {

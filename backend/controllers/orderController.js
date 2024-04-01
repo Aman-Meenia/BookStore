@@ -407,6 +407,9 @@ export const getOrdersById = async (req, res) => {
     );
 
     const orderList = await Order.aggregate([
+      {
+        $match: { userId: new mongoose.Types.ObjectId(req.user._id) },
+      },
       { $unwind: "$books" },
       {
         $lookup: {
@@ -416,6 +419,7 @@ export const getOrdersById = async (req, res) => {
           as: "books.bookDetails",
         },
       },
+
       {
         $addFields: {
           "books.createdAt": "$createdAt",
@@ -470,6 +474,81 @@ export const getOrdersById = async (req, res) => {
     });
   } catch (err) {
     console.log("Error in get Orders Controller " + err.message);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// <-----------------------------Get user with orders only (To show detail of product buy Admin)  ------------------------------------->
+
+export const getUserWithOrders = async (req, res) => {
+  try {
+    const orderList = await Order.aggregate([
+      {
+        $unwind: "$books",
+      },
+      {
+        $lookup: {
+          from: "books",
+          localField: "books.bookId",
+          foreignField: "_id",
+          as: "books.bookDetails",
+        },
+      },
+
+      {
+        $unwind: "$books.bookDetails", // Unwind the bookDetails array
+      },
+      {
+        $lookup: {
+          from: "users", // Assuming the name of the collection where users are stored is "users"
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $group: {
+          _id: "$userId",
+          user: { $first: "$user" },
+
+          totalPrice: { $sum: "$books.bookDetails.price" },
+
+          totalQuantity: { $sum: "$books.quantity" },
+          totalPrice: {
+            $sum: {
+              $multiply: ["$books.bookDetails.price", "$books.quantity"],
+            },
+          },
+        },
+      },
+      {
+        $addFields: {
+          actualPrice: { $divide: ["$totalPrice", "$totalProduct"] },
+        },
+      },
+      {
+        $project: {
+          totalPrice: 1,
+          totalQuantity: 1,
+          user: {
+            fullName: 1,
+            userName: 1,
+            email: 1,
+            profilePic: 1,
+          },
+        },
+      },
+    ]);
+
+    return res.status(200).json({
+      status: true,
+      message: "Orders fetched successfully",
+      data: orderList,
+    });
+  } catch (err) {
     return res.status(500).json({
       status: false,
       message: "Internal server error",

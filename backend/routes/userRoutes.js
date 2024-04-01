@@ -1,5 +1,7 @@
 import { Router } from "express";
 import {
+  alreadyLoginAdmin,
+  alreadyLoginUser,
   forgetPassword,
   forgetPasswordRequest,
   getProfileDetails,
@@ -11,7 +13,7 @@ import {
 } from "../controllers/userController.js";
 import { verifyJWT } from "../middleware/verifyJWT.js";
 import { upload } from "../middleware/multer.js";
-
+import { adminAndUserAuth } from "../middleware/authorization.js";
 const router = Router();
 // Unsecure Routes
 router.post("/signup", signupUser);
@@ -29,5 +31,12 @@ router.post(
   updateProfilePic,
 );
 router.get("/getdetail", verifyJWT, getProfileDetails);
+router.get("/alreadylogin", verifyJWT, alreadyLoginUser);
+router.get(
+  "/alreadyloginadmin",
+  verifyJWT,
+  adminAndUserAuth,
+  alreadyLoginAdmin,
+);
 
 export default router;

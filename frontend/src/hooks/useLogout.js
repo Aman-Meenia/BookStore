@@ -14,6 +14,7 @@ export const useLogout = () => {
         console.log(response);
         console.log("LOgout ");
         toast.success(response.data.message);
+        window.location.href = "/login";
       })
       .catch((err) => {
         toast.error(err.response.data.message, {

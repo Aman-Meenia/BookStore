@@ -4,6 +4,7 @@ import { verifyJWT } from "../middleware/verifyJWT.js";
 import {
   createRazorPayOrder,
   getOrdersById,
+  getUserWithOrders,
   makePaymentStatusPaid,
   validateOrder,
 } from "../controllers/orderController.js";
@@ -16,4 +17,5 @@ router.get("/getordersforuser", verifyJWT, getOrdersById);
 router.post("/create", verifyJWT, createRazorPayOrder);
 router.post("/validatepayment", verifyJWT, makePaymentStatusPaid);
 
+router.get("/ordersDetail", verifyJWT, getUserWithOrders);
 export default router;

@@ -415,3 +415,38 @@ export const getProfileDetails = async (req, res) => {
     });
   }
 };
+
+//  <------------------------------Check user already login --------------------------->
+
+export const alreadyLoginUser = async (req, res) => {
+  console.log(req.user);
+  if (req.user) {
+    return res.status(200).json({
+      status: true,
+      message: "User already login",
+      role: req.user.role,
+    });
+  } else {
+    return res.status(200).json({
+      status: false,
+      message: "User not login",
+    });
+  }
+};
+
+// <---------------------------ALread login Admin------------------------------------>
+
+export const alreadyLoginAdmin = async (req, res) => {
+  if (req.user) {
+    return res.status(200).json({
+      status: true,
+      message: "Admin already login",
+      role: req.user.role,
+    });
+  } else {
+    return res.status(200).json({
+      status: false,
+      message: "Admin not login",
+    });
+  }
+};

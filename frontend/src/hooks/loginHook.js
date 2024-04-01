@@ -32,6 +32,14 @@ export const useLogin = () => {
             color: "#fff",
           },
         });
+
+        setLoading(false);
+        console.log("ROLE IS", response.data.loggedInUser.role);
+        if (response.data.loggedInUser.role === "ADMIN") {
+          window.location.href = "/admin";
+        } else {
+          window.location.href = "/";
+        }
       })
       .catch((err) => {
         console.log("error is " + err);

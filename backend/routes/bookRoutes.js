@@ -3,6 +3,7 @@ import {
   addBook,
   getBookByTitle,
   getBooks,
+  getBooksAdmin,
   updateBook,
 } from "../controllers/bookController.js";
 import { verifyJWT } from "../middleware/verifyJWT.js";
@@ -24,6 +25,7 @@ router.post("/updatebook", verifyJWT, adminAndUserAuth, updateBook);
 
 // unprotected Routes
 router.get("/getbooks", verifyJWT, getBooks);
+router.get("/getbooksadmin", verifyJWT, adminAndUserAuth, getBooksAdmin);
 router.get("/getbookbyid/:id", verifyJWT, getBookById);
 
 export default router;

@@ -3,8 +3,8 @@ import { useAddBook } from "../hooks/useAddBook";
 import { UseGetBookByIdForUpdate } from "../hooks/useGetBookByIdForUpdate";
 import { BookDetailContext } from "../store/fetchForUpdate";
 import { useUpdateBook } from "../hooks/useUpdateBook";
-
-const UpdateProduct = () => {
+import { Link, useParams } from "react-router-dom";
+const UpdateBookAll = () => {
   const [detail, setDetail] = useState({
     title: "",
     author: "",
@@ -68,6 +68,15 @@ const UpdateProduct = () => {
       description: bookDetail.description,
     });
   }, [bookDetail]);
+  const title = useParams().title;
+
+  useEffect(() => {
+    const fun = async () => {
+      console.log("Title is " + title);
+      await getData(title);
+    };
+    fun();
+  }, []);
 
   const handleFetchData = async (e) => {
     e.preventDefault();
@@ -101,13 +110,6 @@ const UpdateProduct = () => {
                   setDetail({ ...detail, title: e.target.value })
                 }
               />
-              <button className="btn btn-sm" onClick={handleFetchData}>
-                {loadingFetch ? (
-                  <span className="loading loading-spinner"> </span>
-                ) : (
-                  "Get Detail"
-                )}
-              </button>
             </div>
 
             {/* Author Name  */}
@@ -225,6 +227,7 @@ const UpdateProduct = () => {
           {/*   onChange={handleFileChange} */}
           {/* /> */}
           {/* Submit button  */}
+
           <button
             type="submit"
             className="mt-10 px-2 py-2.5 w-full rounded text-sm font-semibold bg-[#333] text-white hover:bg-[#222]"
@@ -241,4 +244,4 @@ const UpdateProduct = () => {
   );
 };
 
-export default UpdateProduct;
+export default UpdateBookAll;

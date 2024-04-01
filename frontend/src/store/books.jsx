@@ -4,6 +4,8 @@ export const BooksContext = React.createContext();
 const BooksContextProvider = ({ children }) => {
   const [books, setBooks] = useState([]);
   const [singleBook, setSingleBook] = useState({});
+  const [adminBooks, setAdminBooks] = useState({});
+  const [bookDetailAll, setBookDetailAll] = useState({});
 
   return (
     <BooksContext.Provider
@@ -12,6 +14,10 @@ const BooksContextProvider = ({ children }) => {
         setBooks,
         singleBook,
         setSingleBook,
+        adminBooks,
+        setAdminBooks,
+        bookDetailAll,
+        setBookDetailAll,
       }}
     >
       {children}
