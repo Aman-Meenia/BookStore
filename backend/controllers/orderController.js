@@ -116,12 +116,8 @@ export const validateOrder = async (req, res) => {
       $and: [{ userId: id, payment: "pending" }],
     });
     if (prevOrder) {
-      // console.log("Delete Previous Order");
-      // console.log(prevOrder);
       await Order.findByIdAndDelete(prevOrder._id);
-      // console.log("delted j");
     }
-    // console.log(prevOrder);
 
     //
     // as order is done successfully now empty the cart
