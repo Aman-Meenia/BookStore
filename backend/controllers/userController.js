@@ -400,15 +400,13 @@ export const getProfileDetails = async (req, res) => {
       gender: 1,
       profilePic: 1,
     });
-    console.log("get Detail called ");
-    console.log(user);
     return res.status(200).json({
       status: true,
       message: "User details fetched successfully",
       data: user,
     });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return res.status(500).json({
       status: false,
       message: "Internal server error",
@@ -419,7 +417,7 @@ export const getProfileDetails = async (req, res) => {
 //  <------------------------------Check user already login --------------------------->
 
 export const alreadyLoginUser = async (req, res) => {
-  console.log(req.user);
+  // console.log(req.user);
   if (req.user) {
     return res.status(200).json({
       status: true,

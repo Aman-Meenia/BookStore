@@ -8,7 +8,7 @@ export const verifyJWT = async (req, res, next) => {
     // if token is not present
 
     if (!token) {
-      console.log("NO ACCESS TOKEN (VERIFY JWT)");
+      // console.log("NO ACCESS TOKEN (VERIFY JWT)");
 
       return res.status(401).json({
         status: false,

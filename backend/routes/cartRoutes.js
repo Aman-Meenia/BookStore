@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   addBookToCart,
+  checkAllBooksAreAvailable,
   decreaseBookCount,
   getBooksFromCart,
   getCartTotalPrice,
@@ -17,5 +18,6 @@ router.delete("/removebooks/:bookId", verifyJWT, removeBookFromCart);
 router.get("/decreasequantity/:bookId", verifyJWT, decreaseBookCount);
 router.get("/bill", verifyJWT, getCartTotalPrice);
 router.get("/increasequantity/:bookId", verifyJWT, increaseCountOfBook);
+router.get("/checkbookavailable", verifyJWT, checkAllBooksAreAvailable);
 
 export default router;

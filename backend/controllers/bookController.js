@@ -273,3 +273,61 @@ export const getBookById = async (req, res) => {
     });
   }
 };
+
+// <------------------------------------------------Get Book by Genre------------------------------------>
+
+export const getBooksByGenre = async (req, res) => {
+  try {
+    const { genre } = req.params;
+    const books = await Book.find({ genre: { $in: [genre] } });
+    return res.status(200).json({
+      status: true,
+      message: "Books fetched successfully",
+      data: books,
+    });
+  } catch (err) {
+    console.log("Error in get Books By Genre Controller " + err);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// <------------------------------------------------Most selling books------------------------------------>
+
+export const getMostSellingBooks = async (req, res) => {
+  try {
+    const books = await Book.find().sort({ sold: -1 });
+    return res.status(200).json({
+      status: true,
+      message: "Most selling books fetched successfully",
+      data: books,
+    });
+  } catch (err) {
+    console.log("Error in get Most selling Books Controller " + err);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// <----------------------------------------Latest Books------------------------------------>
+
+export const getLatestBooks = async (req, res) => {
+  try {
+    const books = await Book.find().sort({ createdAt: -1 });
+    return res.status(200).json({
+      status: true,
+      message: "Latest books fetched successfully",
+      data: books,
+    });
+  } catch (err) {
+    console.log("Error in get Latest Books Controller " + err);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};

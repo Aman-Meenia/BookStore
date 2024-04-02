@@ -6,6 +6,7 @@ import Order from "../models/orderModel.js";
 import Cart from "../models/cartModel.js";
 import { validate } from "email-validator";
 import instance from "../index.js";
+import Book from "../models/bookModel.js";
 
 // <-----------------------------------------Order Books ---------------------------------->
 
@@ -214,12 +215,17 @@ export const makePaymentStatusPaid = async (req, res) => {
       { payment: "paid" },
       { new: true },
     );
-    console.log(paymentPending);
 
     const userCart = await Cart.findOne({ userId });
 
+    for (let i = 0; i < userCart.books.length; i++) {
+      const book = await Book.findById(userCart.books[i].bookId);
+      book.quantity = book.quantity - userCart.books[i].quantity;
+      book.sold = book.sold + userCart.books[i].quantity;
+      await book.save();
+    }
+
     const cartDelete = await Cart.findByIdAndDelete(userCart._id);
-    console.log(cartDelete);
 
     return res.status(200).json({
       status: true,

@@ -408,3 +408,57 @@ export const increaseCountOfBook = async (req, res) => {
     });
   }
 };
+
+// <------------------------Check All The Books Present In The Cart Are Available------------------------>
+
+export const checkAllBooksAreAvailable = async (req, res) => {
+  try {
+    const { id: userId } = req.user;
+
+    if (!userId) {
+      return res.status(400).json({
+        status: false,
+        message: "User id is required",
+      });
+    }
+
+    const userCart = await Cart.findOne({ userId }).populate("books.bookId");
+
+    console.log(userCart);
+    if (!userCart) {
+      return res.status(400).json({
+        status: false,
+        message: "Cart empty",
+      });
+    }
+    let unavailableBooks = [];
+    for (let i = 0; i < userCart.books.length; i++) {
+      const totoalAvailale = userCart.books[i].bookId.quantity;
+      if (userCart.books[i].quantity > totoalAvailale) {
+        unavailableBooks.push(userCart.books[i].bookId.title);
+      }
+    }
+
+    if (unavailableBooks.length > 0) {
+      console.log("The following books are unavailable:");
+      console.log(unavailableBooks);
+      return res.status(400).json({
+        status: false,
+        message: "All books are available",
+        unavailableBooks: unavailableBooks,
+      });
+    } else {
+      console.log("All books are available.");
+      return res.status(200).json({
+        status: true,
+        message: "All books are available",
+      });
+    }
+  } catch (err) {
+    console.log("Error in check all books are available " + err);
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};

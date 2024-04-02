@@ -4,6 +4,9 @@ import {
   getBookByTitle,
   getBooks,
   getBooksAdmin,
+  getBooksByGenre,
+  getLatestBooks,
+  getMostSellingBooks,
   updateBook,
 } from "../controllers/bookController.js";
 import { verifyJWT } from "../middleware/verifyJWT.js";
@@ -22,10 +25,13 @@ router.post(
 );
 router.post("/getbookdetail", verifyJWT, adminAndUserAuth, getBookByTitle);
 router.post("/updatebook", verifyJWT, adminAndUserAuth, updateBook);
+router.get("/getbooksadmin", verifyJWT, adminAndUserAuth, getBooksAdmin);
 
 // unprotected Routes
 router.get("/getbooks", verifyJWT, getBooks);
-router.get("/getbooksadmin", verifyJWT, adminAndUserAuth, getBooksAdmin);
 router.get("/getbookbyid/:id", verifyJWT, getBookById);
+router.get("/getbygenre/:genre", verifyJWT, getBooksByGenre);
+router.get("/mostselling", verifyJWT, getMostSellingBooks);
+router.get("/latest", verifyJWT, getLatestBooks);
 
 export default router;
