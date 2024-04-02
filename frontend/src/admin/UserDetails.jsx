@@ -11,9 +11,12 @@ const UserDetails = () => {
     const fun = async () => {
       await getUserDetail();
     };
-    fun();
+    if (!usersData.data) {
+      fun();
+    }
   }, []);
-  console.log(usersData.data);
+  // console.log("Hello Aman Meenia");
+  // console.log(usersData.data);
   return (
     <>
       <div className="font-[sans-serif] w-full md:w-full lg:w-full">

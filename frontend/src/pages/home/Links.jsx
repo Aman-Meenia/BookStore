@@ -1,12 +1,29 @@
 import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useGetMostSelling } from "../../hooks/useGetMostSelling";
 
 const Links = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toogleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleBestSelling = async () => {
+    window.location.href = "/books/bestselling";
+  };
+  const handleNewArrival = async () => {
+    window.location.href = "/books/newarrival";
+  };
+  const handleRomanceBook = async () => {
+    window.location.href = "/books/romance";
+  };
+  const handleSelfHelp = async () => {
+    window.location.href = "/books/selfhelp";
+  };
+  const handleFiction = async () => {
+    window.location.href = "/books/fiction";
   };
   return (
     <>
@@ -31,49 +48,57 @@ const Links = () => {
         >
           <div className="flex items-center">
             <li className="max-lg:border-b border-white-200 max-lg:py-2">
-              <a className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold">
-                New Arrivals
-              </a>
+              <button
+                onClick={handleBestSelling}
+                className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold"
+              >
+                Best Selling
+              </button>
             </li>
             <span className="text-red-500 text-2xl p-3">|</span>
           </div>
           <div className="flex items-center">
             <li className="max-lg:border-b border-white-200 max-lg:py-2">
-              <a className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold">
+              <button
+                onClick={handleNewArrival}
+                className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold"
+              >
                 New Arrivals
-              </a>
+              </button>
+            </li>
+            <span className="text-red-500 text-2xl p-3">|</span>
+          </div>
+
+          <div className="flex items-center">
+            <li className="max-lg:border-b border-white-200 max-lg:py-2">
+              <button
+                onClick={handleRomanceBook}
+                className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold"
+              >
+                Rommance
+              </button>
             </li>
             <span className="text-red-500 text-2xl p-3">|</span>
           </div>
           <div className="flex items-center">
             <li className="max-lg:border-b border-white-200 max-lg:py-2">
-              <a className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold">
-                New Arrivals
-              </a>
+              <button
+                onClick={handleSelfHelp}
+                className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold"
+              >
+                Self-Help
+              </button>
             </li>
             <span className="text-red-500 text-2xl p-3">|</span>
           </div>
           <div className="flex items-center">
             <li className="max-lg:border-b border-white-200 max-lg:py-2">
-              <a className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold">
-                New Arrivals
-              </a>
-            </li>
-            <span className="text-red-500 text-2xl p-3">|</span>
-          </div>
-          <div className="flex items-center">
-            <li className="max-lg:border-b border-white-200 max-lg:py-2">
-              <a className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold">
-                New Arrivals
-              </a>
-            </li>
-            <span className="text-red-500 text-2xl p-3">|</span>
-          </div>
-          <div className="flex items-center">
-            <li className="max-lg:border-b border-white-200 max-lg:py-2">
-              <a className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold">
-                New Arrivals
-              </a>
+              <button
+                onClick={handleFiction}
+                className="lg:hover:text-white-600  text-white-500 text-[15px] block hover:font-bold"
+              >
+                Fiction
+              </button>
             </li>
           </div>
         </ul>

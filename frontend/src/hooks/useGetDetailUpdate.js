@@ -12,7 +12,7 @@ export const UseGetDetailUpdate = () => {
   const getDataAll = async (title) => {
     console.log("works");
     setBookDetailAll({
-      title: "aman",
+      title: "",
       author: "",
       quantity: "",
       price: "",

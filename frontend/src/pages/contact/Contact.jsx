@@ -4,7 +4,7 @@ const Contact = () => {
   return (
     <div className="max-w-full h-full mx-auto bg-white  font-[sans-serif] text-[#011c2b]">
       <div className="text-center px-6">
-        <h2 className="text-3xl font-extrabold">Contact Us</h2>
+        <h2 className="text-3xl font-extrabold p-2">Contact Us</h2>
         <p className="text-sm text-gray-400 mt-3">
           Have some big idea or brand to develop and need help?
         </p>

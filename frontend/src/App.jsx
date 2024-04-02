@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import "./App.css";
 // import {
 //   createBrowserRouter,
@@ -33,6 +33,11 @@ import UpdateBookAll from "./admin/UpdateBookAll.jsx";
 import UserDetails from "./admin/UserDetails.jsx";
 import { useCheckUserAlreadyLogin } from "./hooks/useCheckUserAlreadyLogin.js";
 import { Navigate, Route, Routes } from "react-router-dom";
+import BestSelling from "./pages/BestSelling.jsx";
+import NewArrivals from "./pages/NewArrivals.jsx";
+import FictionBook from "./pages/FictionBook.jsx";
+import SelfHelpBook from "./pages/SelfHelpBook.jsx";
+import RomanceBook from "./pages/RomanceBook.jsx";
 
 // const router = createBrowserRouter(
 //   createRoutesFromElements(
@@ -71,17 +76,23 @@ function App() {
   const { alreadyLogin, setAlreadyLogin, adminLogin } =
     useContext(ProfileContext);
 
+  const fun = useCallback(async () => {
+    await alreadyLoginUser();
+  }, []);
+  //
   useEffect(() => {
-    const fun = async () => {
-      await alreadyLoginUser();
-    };
-    fun();
-  });
+    if (!alreadyLogin) {
+      fun();
+    }
+    console.log("Already Login ", alreadyLogin);
+  }, []);
   // console.log("Already login user ", alreadyLoginUser);
   // console.log("Amdin login ", adminLogin);
+
+  const currentPath = location.pathname;
+  console.log(currentPath);
   return (
     <>
-      {loading && <div className="loader"></div>}
       <Routes>
         <Route
           path="/login"
@@ -93,9 +104,13 @@ function App() {
         />
         <Route path="/sendmail" element={<SendEmail />} />
         <Route path="/forgetpassword/:id" element={<ResetPassword />} />
-        <Route path="/*" element={<Signup />} />
         {alreadyLogin && (
           <Route path="/" element=<Layout />>
+            <Route path="/books/bestselling" element={<BestSelling />} />
+            <Route path="/books/newarrival" element={<NewArrivals />} />
+            <Route path="/books/romance" element={<RomanceBook />} />
+            <Route path="/books/fiction" element={<FictionBook />} />
+            <Route path="/books/selfhelp" element={<SelfHelpBook />} />
             <Route
               path=""
               element={alreadyLogin ? <Home /> : <Navigate to="/login" />}
@@ -127,9 +142,15 @@ function App() {
               path="/orders"
               element={alreadyLogin ? <Orders /> : <Navigate to="/login" />}
             />
+            <Route
+              path="/contact"
+              element={
+                alreadyLogin ? <ContactPage /> : <Navigate to="/login" />
+              }
+            />
+            <Route path="/*" element={<Signup />} />
           </Route>
         )}
-        {/* <Route path="/contact" element={<ContactPage />} /> */}
 
         {/* protected routes */}
 
@@ -160,6 +181,12 @@ function App() {
               path="usersdetails"
               element={adminLogin ? <UserDetails /> : <Navigate to="/login" />}
             />
+            <Route
+              path=""
+              element={adminLogin ? <UserDetails /> : <Navigate to="/login" />}
+            />
+
+            <Route path="*" element={<Navigate to="/admin" />} />
           </Route>
         )}
       </Routes>

@@ -6,9 +6,9 @@ import Contact from "./Contact";
 const ContactPage = () => {
   return (
     <>
-      <Navbar />
+      {/*       <Navbar /> */}
       <Contact />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

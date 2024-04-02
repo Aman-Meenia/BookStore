@@ -1,7 +1,7 @@
 import React from "react";
 
 const UserDetail = ({ user }) => {
-  console.log(user);
+  // console.log(user);
   return (
     <>
       <div className="lg:col-span-2 py-3 px-6 bg-white overflow-x-auto">

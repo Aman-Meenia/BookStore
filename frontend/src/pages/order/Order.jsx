@@ -1,6 +1,16 @@
 import React from "react";
 
 const Order = ({ order }) => {
+  // console.log(order);
+  const mongoDate = new Date(order.books.createdAt);
+
+  // Get the day, month, and year from the MongoDB date
+  const day = mongoDate.getDate();
+  const month = mongoDate.getMonth() + 1; // Months are zero-indexed, so add 1
+  const year = mongoDate.getFullYear();
+
+  // Create a simple date string in the format DD/MM/YYYY
+  const simpleDate = `${day}/${month}/${year}`;
   // console.log("Order funciton called");
   // console.log(order.books.bookDetails[0].title);
   return (
@@ -29,14 +39,27 @@ const Order = ({ order }) => {
           <div className="flex ">
             <div className="flex items-center ">
               <h4 className="text-lg font-bold text-[#333]">
-                ${order.books.bookDetails[0].price}
+                <span className="ml-2 text-gray-500"> ₹</span>
+
+                {order.books.bookDetails[0].price}
               </h4>
             </div>
             <div className="flex items-center ml-auto ">
-              <h4 className="text-lg font-bold text-[#333]">{order.status}</h4>
+              <h4 className="text-lg font-bold text-[#333]">
+                <span className="ml-2 text-gray-500"> Qty:</span>
+
+                {order.books.quantity}
+              </h4>
             </div>
             <div className="flex items-center ml-auto ">
-              <h4 className="text-lg font-bold text-[#333]">{order.status}</h4>
+              <h4 className="text-lg font-bold text-[#333]">{simpleDate}</h4>
+            </div>
+            <div className="flex items-center ml-auto ">
+              <h4 className="text-lg font-bold text-[#333]">
+                <span className="ml-2 text-gray-500"> status:</span>
+
+                {order.status}
+              </h4>
             </div>
           </div>
         </div>

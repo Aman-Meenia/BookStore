@@ -26,7 +26,7 @@ const Sidebar = () => {
     await logout();
   };
 
-  console.log(profile);
+  // console.log(profile);
 
   return (
     <nav className="bg-[#09090a] fixed shadow-lg h-screen  top-0 left-0 min-w-[250px] py-6 px-6 font-[sans-serif] flex flex-col overflow-auto">

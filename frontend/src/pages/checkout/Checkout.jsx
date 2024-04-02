@@ -3,10 +3,11 @@ import CheckoutProduct from "./CheckoutProduct";
 import PlaceOrder from "./PlaceOrder";
 import { CartContext } from "../../store/cart";
 import { userGetCart } from "../../hooks/useGetCart";
+import { useLocation } from "react-router-dom";
 
 const Checkout = () => {
   const { cart } = useContext(CartContext);
-  console.log("cart", cart);
+  // console.log("cart", cart);
   const { loading, getCart } = userGetCart();
   // cart product list
   useEffect(() => {
@@ -15,6 +16,20 @@ const Checkout = () => {
     };
     fun();
   }, []);
+
+  // Check if the current link is active or not
+  const location = useLocation();
+
+  useEffect(() => {
+    // Call your function when the component mounts or when the location changes
+    handleActiveLink();
+  }, [location.pathname]); // Dependency array ensures this effect runs when location.pathname changes
+
+  const handleActiveLink = () => {
+    // Your function to call when the link is active
+    console.log("Link is active!");
+  };
+
   return (
     <>
       {loading && (

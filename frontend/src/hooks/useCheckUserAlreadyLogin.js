@@ -11,8 +11,8 @@ export const useCheckUserAlreadyLogin = () => {
     await axios
       .get("/api/v1/user/alreadyLogin")
       .then((response) => {
-        console.log(response.data);
-        console.log(response.data.role);
+        // console.log(response.data);
+        // console.log(response.data.role);
         if (response.data.role === "ADMIN") {
           setAdminLogin(true);
         } else {

@@ -15,15 +15,17 @@ const Card = ({ book }) => {
             <img
               // src="http://surl.li/rkyla"
               // src="http://surl.li/rkylt"
-              src={book.images}
+              src={book?.images}
               alt="Image not Avaliable "
               className="h-full w-full object-contain"
             />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-gray-800">{book.title}</h3>
-            <p className="text-gray-500 text-sm mt-2">{book.author}</p>
-            <h4 className="text-lg text-gray-700 font-bold mt-4">$10</h4>
+            <h3 className="text-lg font-bold text-gray-800">{book?.title}</h3>
+            <p className="text-gray-500 text-sm mt-2">{book?.author}</p>
+            <h4 className="text-lg text-gray-700 font-bold mt-4">
+              ${book.price}
+            </h4>
           </div>
         </div>
       </Link>

@@ -14,6 +14,7 @@ const Orders = () => {
     };
     fun();
   }, []);
+  console.log("ORDER FUNCITON CALLED");
   // console.log("Order is");
   // console.log(order);
   return (

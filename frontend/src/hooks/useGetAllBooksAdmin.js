@@ -13,10 +13,10 @@ export const useGetAllBooksAdmin = () => {
       .get("/api/v1/book/getbooksadmin")
       .then((response) => {
         setAdminBooks(response.data.data);
-        console.log(response.data.data);
+        // console.log(response.data.data);
       })
       .catch((err) => {
-        console.log("Error in get Books Controller " + err);
+        // console.log("Error in get Books Controller " + err);
         toast.error(err.response.data.message, {
           style: {
             borderRadius: "10px",

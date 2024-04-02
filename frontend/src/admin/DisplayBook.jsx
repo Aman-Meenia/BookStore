@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const DisplayBook = ({ book }) => {
   // console.log("BOOk is ");
-  console.log(book?.author);
+  // console.log(book?.author);
   return (
     <>
       <div className="lg:col-span-2 py-3 px-6 bg-white overflow-x-auto">

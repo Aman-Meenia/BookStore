@@ -14,7 +14,7 @@ const AllBooks = () => {
     fun();
   }, []);
 
-  console.log(adminBooks);
+  // console.log(adminBooks);
 
   return (
     <>

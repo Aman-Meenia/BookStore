@@ -3,6 +3,7 @@ import CartProduct from "./CartProduct";
 import { Link } from "react-router-dom";
 import { CartContext } from "../../store/cart";
 import { userGetCart } from "../../hooks/useGetCart";
+import { useStockCheck } from "../../hooks/useStockCheck";
 
 const Cart = () => {
   const { cart, setCart } = useContext(CartContext);
@@ -17,9 +18,14 @@ const Cart = () => {
     };
     fun();
   }, []);
-  // console.log("Cart is ");
-  // console.log(cart);
 
+  const { checkStock, checkStockLoading } = useStockCheck();
+
+  const handleCheckStock = async (e) => {
+    e.preventDefault();
+    await checkStock();
+  };
+  //
   return (
     <>
       {loading && (
@@ -70,14 +76,14 @@ const Cart = () => {
                 Total <span className="ml-auto">${navBarCart.bill}</span>
               </li>
             </ul>
-            <Link to="/checkout">
-              <button
-                type="button"
-                className="mt-6 text-md px-6 py-2.5 w-full bg-blue-600 hover:bg-blue-700 text-white rounded"
-              >
-                Check out
-              </button>
-            </Link>
+
+            <button
+              onClick={handleCheckStock}
+              type="button"
+              className="mt-6 text-md px-6 py-2.5 w-full bg-blue-600 hover:bg-blue-700 text-white rounded"
+            >
+              Check out
+            </button>
           </div>
         </div>
       </div>
