@@ -24,7 +24,7 @@ export const useLogin = () => {
     await axios
       .post("/api/v1/user/login", { userName, password })
       .then((response) => {
-        console.log(response.data.message);
+        // console.log(response.data.message);
         toast.success(response.data.message, {
           style: {
             borderRadius: "10px",
