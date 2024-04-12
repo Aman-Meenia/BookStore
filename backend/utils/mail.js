@@ -21,6 +21,7 @@ export const sendEmailToUser = async ({ email, userId }) => {
         pass: process.env.MAILTRAP_SMTP_PASS,
       },
     });
+    console.log("UnHashed Token " + unHashedToken);
 
     // Send Email
     const mailOptions = {
@@ -29,7 +30,7 @@ export const sendEmailToUser = async ({ email, userId }) => {
       subject: "Reset your password",
       html: `
         <p>
-          Click<a href="${process.env.DOMAIN} +${unHashedToken}">here</a>
+          Click<a href="${process.env.DOMAIN}+${unHashedToken}">here</a>
         </p>
     `,
     };

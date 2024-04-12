@@ -88,6 +88,57 @@ const Sidebar = () => {
             </Link>
           </a>
         </li>
+        <li>
+          <a
+            href="javascript:void(0)"
+            className="text-gray-300 hover:text-white text-sm flex items-center rounded-md"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              className="w-[18px] h-[18px] mr-4"
+              viewBox="0 0 511.414 511.414"
+            >
+              <path
+                d="M497.695 108.838a16.002 16.002 0 0 0-9.92-14.8L261.787 1.2a16.003 16.003 0 0 0-12.16 0L23.639 94.038a16 16 0 0 0-9.92 14.8v293.738a16 16 0 0 0 9.92 14.8l225.988 92.838a15.947 15.947 0 0 0 12.14-.001c.193-.064-8.363 3.445 226.008-92.837a16 16 0 0 0 9.92-14.8zm-241.988 76.886-83.268-34.207L352.39 73.016l88.837 36.495zm-209.988-51.67 71.841 29.513v83.264c0 8.836 7.164 16 16 16s16-7.164 16-16v-70.118l90.147 37.033v257.797L45.719 391.851zM255.707 33.297l55.466 22.786-179.951 78.501-61.035-25.074zm16 180.449 193.988-79.692v257.797l-193.988 79.692z"
+                data-original="#000000"
+              />
+            </svg>
+
+            <Link
+              to="/admin/deliveredorders"
+              className="text-gray-300 hover:text-white text-sm flex items-center rounded-md"
+            >
+              <span type="button">Delivered Orders</span>
+            </Link>
+          </a>
+        </li>
+
+        <li>
+          <a
+            href="javascript:void(0)"
+            className="text-gray-300 hover:text-white text-sm flex items-center rounded-md"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              className="w-[18px] h-[18px] mr-4"
+              viewBox="0 0 511.414 511.414"
+            >
+              <path
+                d="M497.695 108.838a16.002 16.002 0 0 0-9.92-14.8L261.787 1.2a16.003 16.003 0 0 0-12.16 0L23.639 94.038a16 16 0 0 0-9.92 14.8v293.738a16 16 0 0 0 9.92 14.8l225.988 92.838a15.947 15.947 0 0 0 12.14-.001c.193-.064-8.363 3.445 226.008-92.837a16 16 0 0 0 9.92-14.8zm-241.988 76.886-83.268-34.207L352.39 73.016l88.837 36.495zm-209.988-51.67 71.841 29.513v83.264c0 8.836 7.164 16 16 16s16-7.164 16-16v-70.118l90.147 37.033v257.797L45.719 391.851zM255.707 33.297l55.466 22.786-179.951 78.501-61.035-25.074zm16 180.449 193.988-79.692v257.797l-193.988 79.692z"
+                data-original="#000000"
+              />
+            </svg>
+
+            <Link
+              to="/admin/updateorder"
+              className="text-gray-300 hover:text-white text-sm flex items-center rounded-md"
+            >
+              <span type="button">Update Orders</span>
+            </Link>
+          </a>
+        </li>
 
         <li>
           <a

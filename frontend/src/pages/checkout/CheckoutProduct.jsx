@@ -34,7 +34,7 @@ const CheckoutProduct = ({ book }) => {
               <li className="flex flex-wrap gap-4">
                 Total Price{" "}
                 <span className="ml-auto">
-                  ${book.bookId.price * book.quantity}
+                  ₹{book.bookId.price * book.quantity}
                 </span>
               </li>
             </ul>
@@ -45,7 +45,7 @@ const CheckoutProduct = ({ book }) => {
           {/* </div> */}
           <div className="absolute left-0 bottom-0 bg-[#444] w-full p-4">
             <h4 className="flex flex-wrap gap-4 text-base text-white">
-              Total <span className="ml-auto">${navBarCart.bill}</span>
+              Total <span className="ml-auto">₹{navBarCart.bill}</span>
             </h4>
           </div>
         </div>

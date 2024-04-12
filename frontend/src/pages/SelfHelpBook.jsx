@@ -14,7 +14,7 @@ const SelfHelpBook = () => {
     fun();
   }, []);
 
-  return <>{books && <Cards />}</>;
+  return <>{books && <Cards type="Self-Help" />}</>;
 };
 
 export default SelfHelpBook;

@@ -15,7 +15,7 @@ const FictionBook = () => {
     fun();
   }, []);
 
-  return <>{books && <Cards />}</>;
+  return <>{books && <Cards type={"Fiction"} />}</>;
 };
 
 export default FictionBook;

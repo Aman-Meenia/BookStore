@@ -3,6 +3,7 @@ import { useGetInfo } from "../../hooks/useGetInfo";
 import { ProfileContext } from "../../store/profile";
 import { defaults } from "autoprefixer";
 import { useUpdateInfo } from "../../hooks/useUpateInfo";
+import { Link } from "react-router-dom";
 
 const UserProfile = () => {
   const [details, setDetails] = useState({
@@ -174,10 +175,18 @@ const UserProfile = () => {
                   </div>
                 </div>
               </div>
+              <div className=" ml-[420px] flex justify-end">
+                <Link to="/sendmail">
+                  <button className="btn btn-primary btn-sm">
+                    {" "}
+                    Forget Password{" "}
+                  </button>
+                </Link>
+              </div>
             </div>
 
             {/*Handle Submit*/}
-            <div className="flex justify-center">
+            <div className="flex justify-evenly">
               <button onClick={handleSubmit} className="btn btn-primary btn-sm">
                 {updateLoading ? (
                   <span className="loading loading-spinner"> </span>

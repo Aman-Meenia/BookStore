@@ -14,7 +14,7 @@ const RomanceBook = () => {
     fun();
   }, []);
 
-  return <>{books && <Cards />}</>;
+  return <>{books && <Cards type="Rommance " />}</>;
 };
 
 export default RomanceBook;

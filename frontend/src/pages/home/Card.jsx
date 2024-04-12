@@ -24,7 +24,7 @@ const Card = ({ book }) => {
             <h3 className="text-lg font-bold text-gray-800">{book?.title}</h3>
             <p className="text-gray-500 text-sm mt-2">{book?.author}</p>
             <h4 className="text-lg text-gray-700 font-bold mt-4">
-              ${book.price}
+              ₹{book.price}
             </h4>
           </div>
         </div>

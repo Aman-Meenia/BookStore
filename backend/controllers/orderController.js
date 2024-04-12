@@ -244,6 +244,7 @@ export const updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
+    // const { userName } = req.body;
     if (!status) {
       return res.status(400).json({
         status: false,
@@ -258,14 +259,21 @@ export const updateOrderStatus = async (req, res) => {
         message: "Invalid order id",
       });
     }
-    const validateStatus = ["pending", "processing", "shipped", "delivered"];
+    const validateStatus = ["pending", "cancelled", "shipped", "completed"];
     if (!validateStatus.includes(status)) {
       return res.status(400).json({
         status: false,
         message: "Invalid status",
       });
     }
+    const previousStatus = await Order.findById(id);
 
+    if (status === previousStatus.status) {
+      return res.status(200).json({
+        status: false,
+        message: "Status not updated",
+      });
+    }
     const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
     if (!order) {
       return res.status(400).json({
@@ -329,7 +337,40 @@ export const getShippedOrders = async (req, res) => {
 
 export const getDeliveredOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ status: "delivered" });
+    // console.log("WORKING ");
+    // const orders = await Order.find({ status: "delivered" });
+    const orders = await Order.aggregate([
+      { $match: { status: "completed" } }, // Match documents with status "delivered"
+      { $unwind: "$books" }, // Unwind the "items" array field
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "User",
+        },
+      },
+      {
+        $lookup: {
+          from: "books",
+          localField: "books.bookId",
+          foreignField: "_id",
+          as: "bookDetails",
+        },
+      },
+      {
+        $project: {
+          bookDetails: 1,
+          userId: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          status: 1,
+          User: 1,
+          books: 1,
+        },
+      },
+    ]);
+
     return res.status(200).json({
       status: true,
       message: "Orders fetched successfully",
@@ -551,6 +592,63 @@ export const getUserWithOrders = async (req, res) => {
       data: orderList,
     });
   } catch (err) {
+    return res.status(500).json({
+      status: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// <-------------------------------------Get order which are pending or shipped ------------------------------------->
+
+export const getPendingOrShippedOrders = async (req, res) => {
+  try {
+    const orderList = await Order.aggregate([
+      {
+        $match: { status: { $in: ["pending", "shipped"] } },
+      },
+
+      {
+        $unwind: "$books",
+      },
+      {
+        $lookup: {
+          from: "books",
+          localField: "books.bookId",
+          foreignField: "_id",
+          as: "bookDetails",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $project: {
+          status: 1,
+          title: "$bookDetails.title",
+          author: "$bookDetails.author",
+          price: "$bookDetails.price",
+          images: "$bookDetails.images",
+          quantity: "$books.quantity",
+          userName: "$user.userName",
+          profilePic: "$user.profilePic",
+          createdAt: 1,
+        },
+      },
+    ]);
+
+    return res.status(200).json({
+      status: true,
+      message: "Orders fetched successfully",
+      data: orderList,
+    });
+  } catch (err) {
+    console.log("Error in get Pending Orders Controller " + err.message);
     return res.status(500).json({
       status: false,
       message: "Internal server error",

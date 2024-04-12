@@ -94,7 +94,7 @@ const Navbar = () => {
                 <span className="font-bold text-lg">
                   Items: {navBarCart.quantity}
                 </span>
-                <span className="text-info">Subtotal: ${navBarCart.bill}</span>
+                <span className="text-info">Subtotal: ₹{navBarCart.bill}</span>
                 <Link to="/Cart">
                   <div className="card-actions">
                     <button

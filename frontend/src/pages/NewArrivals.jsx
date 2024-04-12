@@ -16,7 +16,7 @@ const NewArrivals = () => {
     fun();
   }, []);
 
-  return <>{books && <Cards />}</>;
+  return <>{books && <Cards type={"New Arrivals"} />}</>;
 };
 
 export default NewArrivals;

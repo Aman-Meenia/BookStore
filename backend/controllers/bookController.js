@@ -331,3 +331,27 @@ export const getLatestBooks = async (req, res) => {
     });
   }
 };
+
+// <--------------------------------Search Book  --------------------------->
+
+export const searchBook = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    const regex = new RegExp(name, "i");
+
+    const books = await Book.find({ title: { $regex: regex } });
+
+    return res.status(200).json({
+      status: true,
+      message: "Book fetched successfully",
+      data: books,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: "Internal server error",
+      err: err.message,
+    });
+  }
+};

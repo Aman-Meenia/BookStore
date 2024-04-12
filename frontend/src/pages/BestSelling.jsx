@@ -12,7 +12,7 @@ const BestSelling = () => {
     };
     fun();
   }, []);
-  return <>{books && <Cards />}</>;
+  return <>{books && <Cards type={"Best Selling"} />}</>;
 };
 
 export default BestSelling;

@@ -7,6 +7,7 @@ import {
   getBooksByGenre,
   getLatestBooks,
   getMostSellingBooks,
+  searchBook,
   updateBook,
 } from "../controllers/bookController.js";
 import { verifyJWT } from "../middleware/verifyJWT.js";
@@ -33,5 +34,7 @@ router.get("/getbookbyid/:id", verifyJWT, getBookById);
 router.get("/getbygenre/:genre", verifyJWT, getBooksByGenre);
 router.get("/mostselling", verifyJWT, getMostSellingBooks);
 router.get("/latest", verifyJWT, getLatestBooks);
+
+router.post("/searchbook", verifyJWT, searchBook);
 
 export default router;

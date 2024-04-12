@@ -64,16 +64,16 @@ const Cart = () => {
             <ul className="text-[#333] divide-y mt-6">
               <li className="flex flex-wrap gap-4 text-md py-4">
                 Subtotal{" "}
-                <span className="ml-auto font-bold">${navBarCart.bill}</span>
+                <span className="ml-auto font-bold">₹{navBarCart.bill}</span>
               </li>
               <li className="flex flex-wrap gap-4 text-md py-4">
-                Shipping <span className="ml-auto font-bold">$0.00</span>
+                Shipping <span className="ml-auto font-bold">₹0.00</span>
               </li>
               <li className="flex flex-wrap gap-4 text-md py-4">
-                Tax <span className="ml-auto font-bold">$0.00</span>
+                Tax <span className="ml-auto font-bold">₹0.00</span>
               </li>
               <li className="flex flex-wrap gap-4 text-md py-4 font-bold">
-                Total <span className="ml-auto">${navBarCart.bill}</span>
+                Total <span className="ml-auto"> ₹{navBarCart.bill}</span>
               </li>
             </ul>
 

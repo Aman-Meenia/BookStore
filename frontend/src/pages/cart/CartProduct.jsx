@@ -101,7 +101,7 @@ const CartProduct = ({ book }) => {
           </div>
           <div className="flex items-center">
             <h4 className="text-lg font-bold text-[#333]">
-              ${book.bookId.price}
+              ₹{book.bookId.price}
             </h4>
             {/*Delete Cart*/}
             <svg

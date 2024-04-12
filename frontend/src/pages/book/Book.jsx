@@ -60,10 +60,10 @@ const Book = () => {
               </h2>
               <div className="flex flex-wrap gap-4 mt-6">
                 <p className="text-[#333] text-4xl font-bold">
-                  ${singleBook?.price}
+                  ₹{singleBook?.price}
                 </p>
                 <p className="text-gray-400 text-xl">
-                  <strike>${singleBook?.price + 5}</strike>{" "}
+                  <strike>₹{singleBook?.price + 40}</strike>{" "}
                   <span className="text-sm ml-1">Tax included</span>
                 </p>
               </div>

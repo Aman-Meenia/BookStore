@@ -39,4 +39,7 @@ router.get(
   alreadyLoginAdmin,
 );
 
+router.post("/forgetpasswordrequest", verifyJWT, forgetPasswordRequest);
+router.post("/forgetpassword/:unHashedToken", forgetPassword);
+
 export default router;

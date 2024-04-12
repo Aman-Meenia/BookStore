@@ -16,6 +16,7 @@ export const useCheckUserAlreadyLogin = () => {
         if (response.data.role === "ADMIN") {
           setAdminLogin(true);
         } else {
+          console.log("ALready login");
           setAlreadyLogin(true);
         }
       })

@@ -6,6 +6,7 @@ const BooksContextProvider = ({ children }) => {
   const [singleBook, setSingleBook] = useState({});
   const [adminBooks, setAdminBooks] = useState({});
   const [bookDetailAll, setBookDetailAll] = useState({});
+  const [searchBook, setSearchBook] = useState({});
 
   return (
     <BooksContext.Provider
@@ -18,6 +19,8 @@ const BooksContextProvider = ({ children }) => {
         setAdminBooks,
         bookDetailAll,
         setBookDetailAll,
+        searchBook,
+        setSearchBook,
       }}
     >
       {children}

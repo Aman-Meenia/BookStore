@@ -58,7 +58,7 @@ const Order = ({ order }) => {
               <h4 className="text-lg font-bold text-[#333]">
                 <span className="ml-2 text-gray-500"> status:</span>
 
-                {order.status}
+                {order.status === "completed" ? "Delivered" : order.status}
               </h4>
             </div>
           </div>

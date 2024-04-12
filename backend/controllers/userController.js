@@ -227,8 +227,11 @@ export const forgetPasswordRequest = async (req, res) => {
 export const forgetPassword = async (req, res) => {
   try {
     let { password, confirmPassword } = req.body;
-    const { unHashedToken } = req.params;
-
+    let { unHashedToken } = req.params;
+    // console.log(unHashedToken);
+    // unHashedToken = unHashedToken.replace("/", "");
+    unHashedToken = unHashedToken.substring(1);
+    // console.log(unHashedToken);
     // console.log(hashval);
     confirmPassword = confirmPassword.trim();
     if (!password || !confirmPassword) {
@@ -281,13 +284,13 @@ export const forgetPassword = async (req, res) => {
     // user.password = await bcrypt.hash(password, 10);
 
     await user.save({ validateBeforeSave: false });
-
+    // console.log("Working ");
     return res.status(200).json({
       status: true,
       message: "Password changed successfully",
     });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return res.status(500).json({
       status: false,
       message: "Internal server error",

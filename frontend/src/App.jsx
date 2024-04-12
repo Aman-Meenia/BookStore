@@ -38,6 +38,8 @@ import NewArrivals from "./pages/NewArrivals.jsx";
 import FictionBook from "./pages/FictionBook.jsx";
 import SelfHelpBook from "./pages/SelfHelpBook.jsx";
 import RomanceBook from "./pages/RomanceBook.jsx";
+import UpdateOrders from "./admin/UpdateOrders.jsx";
+import DeliveredOrders from "./admin/DeliveredOrders.jsx";
 
 // const router = createBrowserRouter(
 //   createRoutesFromElements(
@@ -84,16 +86,28 @@ function App() {
     if (!alreadyLogin) {
       fun();
     }
-    console.log("Already Login ", alreadyLogin);
+    // console.log("Already Login ", alreadyLogin);
   }, []);
   // console.log("Already login user ", alreadyLoginUser);
   // console.log("Amdin login ", adminLogin);
 
   const currentPath = location.pathname;
-  console.log(currentPath);
+  // console.log(currentPath);
   return (
     <>
+      {loading && (
+        <div className="w-full h-screen flex justify-center items-center">
+          <div
+            className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full"
+            role="status"
+          >
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
+
       <Routes>
+        {/* <Route path="/forgotpassword/:hash" element={<ResetPassword />} /> */}
         <Route
           path="/login"
           element={alreadyLogin ? <Navigate to="/" /> : <Login />}
@@ -104,6 +118,14 @@ function App() {
         />
         <Route path="/sendmail" element={<SendEmail />} />
         <Route path="/forgetpassword/:id" element={<ResetPassword />} />
+
+        {!alreadyLogin && !adminLogin && (
+          <Route
+            path="/*"
+            element={alreadyLogin ? <Navigate to="/" /> : <Login />}
+          />
+        )}
+
         {alreadyLogin && (
           <Route path="/" element=<Layout />>
             <Route path="/books/bestselling" element={<BestSelling />} />
@@ -185,10 +207,22 @@ function App() {
               path=""
               element={adminLogin ? <UserDetails /> : <Navigate to="/login" />}
             />
+            <Route
+              path="updateorder"
+              element={adminLogin ? <UpdateOrders /> : <Navigate to="/login" />}
+            />
 
+            <Route
+              path="deliveredorders"
+              element={
+                adminLogin ? <DeliveredOrders /> : <Navigate to="/login" />
+              }
+            />
             <Route path="*" element={<Navigate to="/admin" />} />
           </Route>
         )}
+
+        {adminLogin && <Route path="*" element={<Navigate to="/admin" />} />}
       </Routes>
     </>
   );
