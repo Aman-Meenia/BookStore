@@ -4,7 +4,7 @@
 # Home page
 <img width="1414" alt="Screenshot 2024-10-02 at 11 40 48 AM" src="https://github.com/user-attachments/assets/68137111-e78f-4203-9ba4-a3de75f603a1">
 
-# Cart
+# Product Detail
 <img width="1414" alt="Screenshot 2024-10-02 at 11 41 16 AM" src="https://github.com/user-attachments/assets/497364f5-d0aa-4e07-b9c7-a874068fc783">
 
 #Cart
