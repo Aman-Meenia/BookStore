@@ -1,8 +1,9 @@
 # ADMIN DASHBOARD
 <img width="1414" alt="Screenshot 2024-10-02 at 11 47 49 AM" src="https://github.com/user-attachments/assets/e775bff6-f2e6-4bf8-ac6b-f4eead035df0">
 
-# Main Webstie
+# Home page
 <img width="1414" alt="Screenshot 2024-10-02 at 11 40 48 AM" src="https://github.com/user-attachments/assets/68137111-e78f-4203-9ba4-a3de75f603a1">
+# Cart
 <img width="1414" alt="Screenshot 2024-10-02 at 11 41 16 AM" src="https://github.com/user-attachments/assets/497364f5-d0aa-4e07-b9c7-a874068fc783">
 <img width="1414" alt="Screenshot 2024-10-02 at 11 41 45 AM" src="https://github.com/user-attachments/assets/11a3abf1-36f5-4d3c-9cdb-2900656bb9ec">
 <img width="1414" alt="Screenshot 2024-10-02 at 11 42 27 AM" src="https://github.com/user-attachments/assets/b9ea6333-e233-4fb2-8786-5c6886e7276b">
